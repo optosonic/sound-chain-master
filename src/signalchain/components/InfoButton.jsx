@@ -90,7 +90,7 @@ export default function InfoButton({ panelId, accent, compact = false }) {
       onClick={() => info && setOpen(true)}
       title={info ? `About ${info.title}` : 'Info'}
       aria-label={info ? `About ${info.title}` : 'Info'}
-      className={`sc-info-btn ${box} flex shrink-0 items-center justify-center rounded-full border font-bold leading-none transition-all hover:scale-105`}
+      className={`sc-info-btn ${box} flex shrink-0 items-center justify-center rounded-full border font-bold leading-none transition-all hover:brightness-125`}
       style={
         accent
           ? { borderColor: accent + '66', color: accent, background: accent + '1a' }

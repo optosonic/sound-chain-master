@@ -193,27 +193,25 @@ export default function MasteringPanel({ engine }) {
 
   return (
     <section className="sc-panel sc-mastering-studio flex h-full min-h-0 flex-col overflow-visible" style={{ background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 0.5px, transparent 0.5px, transparent 2px), linear-gradient(160deg, #24272d 0%, #191c21 50%, #101216 100%)' }}>
-      <div className="mb-3 flex shrink-0 items-center justify-between gap-3 pt-0.5">
+      <div className="relative z-10 mb-3 flex shrink-0 items-center justify-between gap-3 overflow-visible pt-1">
         <div className="flex min-w-0 items-center gap-2">
           <div className="p-1.5 rounded-lg" style={{ background: ACCENT + '22' }}><Disc3 className="w-4 h-4" style={{ color: ACCENT }} /></div>
           <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Mastering Studio</h2>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <span className="hidden text-[10px] font-mono text-white/70 sm:inline">AI recipe · offline render · LUFS normalize · WAV</span>
+        <div className="relative z-20 flex shrink-0 items-center gap-2 overflow-visible pr-0.5">
+          <span className="hidden text-[10px] font-mono text-white/70 sm:inline">AI recipe · offline render · LUFS normalize · export</span>
           <InfoButton panelId="mastering" accent={ACCENT} />
         </div>
       </div>
 
-      <div className="mb-3 shrink-0">
-        <div className="text-[10px] uppercase tracking-wider text-white/75 mb-1.5">Style</div>
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(STYLES).map(([k, s]) => btn(style === k, () => setStyle(k), s.label, undefined, k))}
-        </div>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-[minmax(140px,1fr)_minmax(260px,1.7fr)_minmax(220px,1fr)] items-stretch gap-3">
+      {/* Native: gauge + rail gy = STYLE y (48); TARGET LUFS stays at y=94 — do not couple to the rise. */}
+      <div className="grid min-h-0 flex-1 grid-cols-[minmax(140px,1fr)_minmax(260px,1.7fr)_minmax(220px,1fr)] items-start gap-3">
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-wider text-white/75 mb-1.5">Target LUFS</div>
+          <div className="text-[10px] uppercase tracking-wider text-white/75 mb-1.5">Style</div>
+          <div className="flex flex-nowrap gap-1.5">
+            {Object.entries(STYLES).map(([k, s]) => btn(style === k, () => setStyle(k), s.label, undefined, k))}
+          </div>
+          <div className="mt-3 text-[10px] uppercase tracking-wider text-white/75 mb-1.5">Target LUFS</div>
           <div className="mb-4 grid grid-cols-5 gap-1.5">
             {LUFS_OPTIONS.map((l) => btn(targetLufs === l, () => onLufs(l), `${l}`, undefined, l))}
           </div>
@@ -224,31 +222,33 @@ export default function MasteringPanel({ engine }) {
           <p className="mt-1.5 text-[9px] text-white/60">{MEDIUMS[medium]?.note}</p>
         </div>
 
-        <div className="flex min-h-0 items-center justify-center overflow-visible">
+        <div className="flex min-h-0 justify-center overflow-visible">
           <MasterEffectGauge value={engine.masterEffect ?? 0} onChange={(v) => engine.setMasterEffect?.(v)} min={-50} max={50} step={0.5} defaultValue={0} accent={ACCENT} />
         </div>
 
-        <div className="flex min-h-0 justify-center">
-          <div className="flex h-full w-[200px] max-w-full flex-col">
+        <div className="flex min-h-0 justify-center self-stretch overflow-visible">
+          <div className="flex h-full w-[300px] max-w-full flex-col overflow-visible">
             <MasteringPresetsMenu engine={engine} />
             <div
-              className="mt-2 min-h-[72px] flex-1 overflow-hidden rounded-lg px-2.5 py-2"
+              className="mt-2 flex min-h-[72px] flex-1 flex-col overflow-hidden rounded-lg px-3.5 py-3"
               style={{
                 background: 'linear-gradient(180deg, #0c0f14 0%, #05070b 100%)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(0,0,0,0.55)',
                 border: '1px solid rgba(255,255,255,0.10)',
               }}
             >
-              <div className="text-[12px] font-bold text-white/90">{preset?.name}</div>
-              <div className="mt-0.5 font-mono text-[11px]" style={{ color: ACCENT }}>{preset?.targetLufs}L</div>
-              <div className="mt-1.5 flex flex-wrap gap-1">
+              <div className="shrink-0 text-[16px] font-bold leading-tight text-white/[0.96]">{preset?.name}</div>
+              <div className="mt-0.5 shrink-0 font-mono text-[15px]" style={{ color: ACCENT }}>
+                {preset?.targetLufs != null ? `\u2212${Math.abs(preset.targetLufs)}L` : ''}
+              </div>
+              <div className="mt-2 flex shrink-0 flex-wrap gap-1.5">
                 {[MEDIUMS[preset?.medium]?.label, STYLES[preset?.style]?.label, preset?.targetLufs != null ? `${preset.targetLufs} LUFS` : null]
                   .filter(Boolean)
                   .map((tag) => (
-                    <span key={tag} className="rounded border border-white/12 bg-white/[0.06] px-1.5 py-0.5 text-[8px] uppercase tracking-wider text-white/55">{tag}</span>
+                    <span key={tag} className="rounded border border-white/12 bg-white/[0.06] px-1.5 py-0.5 text-[11px] tracking-wide text-white/78">{tag}</span>
                   ))}
               </div>
-              <p className="mt-1.5 text-[10px] leading-snug text-white/60">{preset?.info}</p>
+              <p className="mt-2.5 min-h-0 flex-1 overflow-y-auto text-[18px] leading-relaxed text-white/90">{preset?.info}</p>
             </div>
             <button
               onClick={generate}
@@ -280,14 +280,15 @@ export default function MasteringPanel({ engine }) {
                 <Waves className="h-3 w-3 text-black" /> Section Mastering
               </span>
             )}
-            <div className="mt-auto pt-3">
-              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-white/75">Export</div>
-              <div className="grid grid-cols-4 gap-1">
+            <div className="mt-auto pt-2">
+              <div className="mb-1 text-[10px] uppercase tracking-wider text-white/75">Export</div>
+              {/* Native 4+3 wrap: WAV AIFF FLAC OGG / M4A MP4 MP3 */}
+              <div className="grid grid-cols-4 gap-x-1.5 gap-y-1">
                 {AUDIO_FORMATS.map((f) => (
                   <button
                     key={f.id}
                     onClick={() => setFormat(f.id)}
-                    className={`rounded-md py-1 font-mono text-[10px] font-bold transition-all ${format === f.id ? 'text-black' : 'border border-white/15 bg-white/5 text-white/60 hover:bg-white/10'}`}
+                    className={`h-[22px] rounded-md font-mono text-[10px] font-bold leading-none transition-all ${format === f.id ? 'text-black' : 'border border-white/15 bg-white/5 text-white/60 hover:bg-white/10'}`}
                     style={format === f.id ? { background: ACCENT } : undefined}
                   >
                     {f.label}

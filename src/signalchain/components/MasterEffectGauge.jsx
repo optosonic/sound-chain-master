@@ -190,13 +190,13 @@ export default function MasterEffectGauge({
   return (
     <div className="relative flex flex-col items-center" style={{ width: W }}>
 
-      {/* header */}
-      <div className="relative pt-3 text-center">
+      {/* header — native gauge paints the title at y=8 so STYLE/rail can top-align */}
+      <div className="relative pt-2 text-center">
         <span className="text-[13px] font-semibold uppercase tracking-[0.26em] text-white/85">{label}</span>
       </div>
 
       {/* value readout */}
-      <div className="relative mb-5 text-center leading-none">
+      <div className="relative mb-1 text-center leading-none">
         <span className="tabular-nums text-[12px] font-light tracking-wide" style={{ color: gem }}>
           {formatValue(value)}<span className="ml-0.5 text-[11px] font-light tracking-[0.05em]" style={{ color: gem, opacity: 0.8 }}>%</span>
         </span>

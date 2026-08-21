@@ -32,11 +32,11 @@ export default function MasteringPresetsMenu({ engine, className = '' }) {
     'flex items-center justify-center rounded-md border border-white/15 bg-black/40 text-white/55 transition-all hover:bg-white/10 hover:text-white';
 
   return (
-    <div className={`flex w-full items-center gap-1 ${className}`}>
+    <div className={`relative z-30 flex w-full items-center gap-1 ${className}`}>
       <button type="button" onClick={() => step(-1)} title="Previous preset" className={arrowCls} style={{ height: 24, width: 22 }}>
         <ChevronLeft size={14} />
       </button>
-      <div className="relative min-w-0 flex-1">
+      <div className="relative z-30 min-w-0 flex-1">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -49,7 +49,7 @@ export default function MasteringPresetsMenu({ engine, className = '' }) {
         {open && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-            <div className="absolute right-0 top-8 z-50 w-52 rounded-lg border border-white/15 bg-[#060b14] p-1 shadow-2xl">
+            <div className="absolute right-0 top-8 z-50 w-[312px] rounded-lg border border-white/15 bg-[#060b14] p-1 shadow-2xl">
               <div className="px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-white/40">Mastering Presets</div>
               <div className="max-h-[60vh] overflow-y-auto">
                 {FACTORY_PRESETS.map((p, i) => (

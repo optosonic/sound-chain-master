@@ -35,7 +35,7 @@ export default function PluginLayout({ engine, theme, width = 1200, height = 800
             </div>
           )}
           {page === 'master' && (
-            <div className="h-full overflow-auto">
+            <div className="h-full min-h-0 overflow-x-hidden overflow-y-auto p-0.5">
               <MasteringPanel engine={engine} />
             </div>
           )}
