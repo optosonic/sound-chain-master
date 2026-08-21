@@ -12,6 +12,11 @@ import { CHAR_ENUM, gainReductionDbModeled } from '../compressorModel.js';
  * channel, mirroring how Saturation's mode buttons swap the transfer curve.
  * Threshold & makeup stay user-controlled. Labels match the reference row.
  */
+/** Post-threshold cyan handle sits ~12 dB above thresh, clamped to −6…0 dB. */
+function ratioHandleInDb(thr) {
+  return Math.min(0, Math.max(-6, thr + 12));
+}
+
 const TYPES = [
   { id: 'platinum', label: 'Digital', ratio: 4, knee: 0, attack: 0.003, release: 0.12 },
   { id: 'vca', label: 'Studio VCA', ratio: 4, knee: 10, attack: 0.01, release: 0.18 },
@@ -46,8 +51,16 @@ export default function CompressorPanel({ compressor, onChange, analyzers, node,
   // snapping frame-to-frame (which read as a squashed ellipsoid) and keeps
   // the dot's motion light and "ballistic" rather than sample-accurate.
   const [dotDb, setDotDb] = useState(-60);
+  const [graphHover, setGraphHover] = useState(null); // 'thresh' | 'ratio' | null
+  const [graphDrag, setGraphDrag] = useState(null);
   const dotDbRef = useRef(-60);
   const rafRef = useRef(null);
+  const svgRef = useRef(null);
+  const dragRef = useRef(null);
+  const safeRef = useRef(safe);
+  const onChangeRef = useRef(onChange);
+  safeRef.current = safe;
+  onChangeRef.current = onChange;
   const inRef = useRef(null);
   const outRef = useRef(null);
   const nodeRef = useRef(null);
@@ -204,6 +217,85 @@ export default function CompressorPanel({ compressor, onChange, analyzers, node,
   const sigOutDb = sigInDb - sigGr;
   const showSigDot = safe.enabled && sigInDb > -59;
 
+  const thr = getCh('threshold');
+  const handleIn = ratioHandleInDb(thr);
+  const handleOut = handleIn - gainReductionDbModeled(
+    handleIn, thr, Math.max(1, getCh('ratio')), Math.max(0, getCh('knee')), chId, getCh('model'),
+  );
+  const hx = mx(handleIn);
+  const hy = my(handleOut);
+  const thrX = mx(thr);
+  const thrHot = graphHover === 'thresh' || graphDrag === 'thresh';
+  const ratioHot = graphHover === 'ratio' || graphDrag === 'ratio';
+
+  const svgPt = (e) => {
+    const svg = svgRef.current;
+    if (!svg) return { x: 0, y: 0 };
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return { x: 0, y: 0 };
+    const p = svg.createSVGPoint();
+    p.x = e.clientX; p.y = e.clientY;
+    const q = p.matrixTransform(ctm.inverse());
+    return { x: q.x, y: q.y };
+  };
+  const xToDb = (x) => DB_MIN + ((x - PLOT.L) / PW) * (DB_MAX - DB_MIN);
+  const yToDb = (y) => DB_MIN + ((PLOT.B - y) / PH) * (DB_MAX - DB_MIN);
+
+  const hitGraph = (p) => {
+    if (p.y >= PLOT.T - 4 && p.y <= PLOT.B + 4 && Math.abs(p.x - thrX) <= 7) return 'thresh';
+    if (Math.hypot(p.x - hx, p.y - hy) <= 14) return 'ratio';
+    const t = getCh('threshold');
+    let best = 1e9;
+    for (let i = 0; i <= 180; i++) {
+      const inDb = DB_MIN + (i / 180) * (DB_MAX - DB_MIN);
+      if (inDb < t + 3) continue;
+      const gr = gainReductionDbModeled(inDb, t, Math.max(1, getCh('ratio')), Math.max(0, getCh('knee')), chId, getCh('model'));
+      best = Math.min(best, Math.hypot(p.x - mx(inDb), p.y - my(inDb - gr)));
+    }
+    if (best <= 8) return 'ratio';
+    return null;
+  };
+
+  const applyGraph = (kind, p) => {
+    const s = safeRef.current;
+    const ms = !!s.msMode;
+    const side = ms && s.msChannel === 'side';
+    const patch = (k, v) => {
+      const key = side ? `side${k.charAt(0).toUpperCase()}${k.slice(1)}` : k;
+      onChangeRef.current?.({ ...s, [key]: v });
+    };
+    if (kind === 'thresh') {
+      const db = Math.max(-60, Math.min(0, Math.round(xToDb(p.x) * 10) / 10));
+      patch('threshold', db);
+      return;
+    }
+    if (kind === 'ratio') {
+      const T = side ? s.sideThreshold : s.threshold;
+      const inDb = Math.max(T + 8, xToDb(p.x));
+      const outDb = yToDb(p.y);
+      const over = inDb - T;
+      const rise = outDb - T;
+      const r = rise <= 0.05 ? 20 : over / rise;
+      patch('ratio', Math.max(1, Math.min(20, Math.round(r * 10) / 10)));
+    }
+  };
+
+  useEffect(() => {
+    if (!graphDrag) return;
+    const move = (e) => applyGraph(dragRef.current, svgPt(e));
+    const up = () => { dragRef.current = null; setGraphDrag(null); };
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+    return () => {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+    };
+  }, [graphDrag]);
+
+  const graphCursor = graphDrag === 'thresh' || graphHover === 'thresh' ? 'ew-resize'
+    : graphDrag === 'ratio' || graphHover === 'ratio' ? 'nesw-resize'
+      : 'crosshair';
+
   return (
     <div>
       <div data-fx="compressor" className="h-[470px] flex flex-col p-4 pb-5 rounded-xl bg-gradient-to-br from-sky-950/40 to-black/60 border border-bluegraphite-500/30">
@@ -273,9 +365,31 @@ export default function CompressorPanel({ compressor, onChange, analyzers, node,
           <div className="flex-1 min-h-0 rounded-lg p-1.5 border border-bluegraphite-500/25 bg-black/60 shadow-[inset_0_0_18px_rgba(125,211,252,0.08)] flex flex-col">
             <div className="flex items-center justify-between px-1 pb-1">
               <span className="text-[8px] font-mono uppercase tracking-widest text-sky-200">Transfer Characteristic</span>
-              <span className="text-[8px] font-mono text-sky-200">{activeType.label}</span>
+              <span className="text-[8px] font-mono text-sky-200/80 truncate max-w-[58%] text-right" title="Drag the dotted line = Threshold · cyan handle / post-threshold curve = Ratio">
+                {activeType.label} · drag line = thresh · handle = ratio
+              </span>
             </div>
-            <svg viewBox="0 0 300 194" className="w-full flex-1 min-h-0" preserveAspectRatio="xMidYMid meet">
+            <svg
+              ref={svgRef}
+              viewBox="0 0 300 194"
+              className="w-full flex-1 min-h-0 touch-none"
+              preserveAspectRatio="xMidYMid meet"
+              style={{ cursor: graphCursor }}
+              onPointerDown={(e) => {
+                const hit = hitGraph(svgPt(e));
+                if (!hit) return;
+                e.preventDefault();
+                e.currentTarget.setPointerCapture?.(e.pointerId);
+                dragRef.current = hit;
+                setGraphDrag(hit);
+                applyGraph(hit, svgPt(e));
+              }}
+              onPointerMove={(e) => {
+                if (graphDrag) return;
+                setGraphHover(hitGraph(svgPt(e)));
+              }}
+              onPointerLeave={() => { if (!graphDrag) setGraphHover(null); }}
+            >
               <defs>
                 <filter id="cmpGlow" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="2.4" result="b" />
@@ -311,8 +425,14 @@ export default function CompressorPanel({ compressor, onChange, analyzers, node,
               {/* Unity (no-compression) reference */}
               <line x1={mx(DB_MIN)} y1={my(DB_MIN)} x2={mx(DB_MAX)} y2={my(DB_MAX)} stroke="rgba(255,255,255,0.55)" strokeWidth="1" strokeDasharray="3,3" />
 
-              {/* Threshold line */}
-              <line x1={mx(getCh('threshold'))} y1={PLOT.T} x2={mx(getCh('threshold'))} y2={PLOT.B} stroke="rgba(125,211,252,0.7)" strokeWidth="0.8" strokeDasharray="2,2" />
+              {/* Threshold line — drag horizontally */}
+              <line
+                x1={thrX} y1={PLOT.T} x2={thrX} y2={PLOT.B}
+                stroke={thrHot ? 'rgba(125,211,252,0.95)' : 'rgba(125,211,252,0.7)'}
+                strokeWidth={thrHot ? 1.6 : 0.8}
+                strokeDasharray="2,2"
+              />
+              <rect x={thrX - 6} y={PLOT.T} width="12" height={PLOT.B - PLOT.T} fill="transparent" />
 
               {/* Tick labels */}
               {DB_TICKS.map((t, i) => (
@@ -345,6 +465,12 @@ export default function CompressorPanel({ compressor, onChange, analyzers, node,
                   <circle cx={mx(sigInDb) - 1.2} cy={my(sigOutDb) - 1.2} r="1.2" fill="#ffffff" />
                 </>
               )}
+
+              {/* Ratio handle — drag to tilt the post-threshold slope */}
+              {ratioHot && (
+                <circle cx={hx} cy={hy} r="9.5" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.3" />
+              )}
+              <circle cx={hx} cy={hy} r={ratioHot ? 6.5 : 5} fill="#7dd3fc" fillOpacity={ratioHot ? 1 : 0.85} stroke="#0b1a24" strokeWidth="1.2" />
             </svg>
           </div>
           <div className="flex flex-col items-center gap-1 w-10 shrink-0">
