@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Play, Pause, Square, Mic, MicOff, Upload, Volume2, Power, RotateCcw } from 'lucide-react';
 import ThemePresetNav from '@/signalchain/components/ThemePresetNav.jsx';
+import { AUDIO_IMPORT_ACCEPT } from '@/signalchain/audioFormats.js';
 
 /**
  * Shared slim transport / status bar used by the plugin and mini layouts.
@@ -28,7 +29,7 @@ export default function TransportBar({ engine, dense = false }) {
         <Upload size={12} />
         <span className="max-w-[120px] truncate font-mono text-white/60">{fileName || 'Load file…'}</span>
       </button>
-      <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={onFileInput} />
+      <input ref={fileRef} type="file" accept={AUDIO_IMPORT_ACCEPT} className="hidden" onChange={onFileInput} />
 
       <div className="mx-1 h-4 w-px bg-white/10" />
 

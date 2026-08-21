@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
-import { ChevronDown, ChevronLeft, ChevronRight, Link2, Unlink } from 'lucide-react';
+import { Link2, Unlink } from 'lucide-react';
 import IOGainFader from '@/signalchain/components/IOGainFader.jsx';
 import SignalPathPanel from '@/signalchain/components/SignalPathPanel.jsx';
 import LevelMeter from '@/signalchain/components/LevelMeter.jsx';
@@ -20,8 +20,7 @@ import Mon8Panel from '@/signalchain/components/Mon8Panel.jsx';
 import AnalogueDensityPanel from '@/signalchain/components/AnalogueDensityPanel.jsx';
 import OutputVisualizer from '@/signalchain/components/OutputVisualizer.jsx';
 import { FX_SLOT, instanceType } from '@/signalchain/fxSlots.js';
-import { FACTORY_PRESETS } from '@/signalchain/mastering/factoryPresets.js';
-import { applyRecipe } from '@/signalchain/mastering/applyRecipe.js';
+import MasteringPresetsMenu from '@/signalchain/components/MasteringPresetsMenu.jsx';
 
 // Display-only "box" appended to the serial chain — clicking it shows the
 // full multimeter in the lower window instead of an effect editor.
@@ -73,69 +72,6 @@ function InspectorFor({ slot, engine }) {
     default:
       return null;
   }
-}
-
-function PresetsMenu({ engine }) {
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(0);
-  const apply = (i) => {
-    const p = FACTORY_PRESETS[i];
-    if (!p) return;
-    if (!p.recipe) engine?.handleReset?.();
-    else applyRecipe(engine, p.recipe);
-    setActive(i);
-    setOpen(false);
-  };
-  const step = (dir) => {
-    const n = FACTORY_PRESETS.length;
-    if (!n) return;
-    apply((active + dir + n) % n);
-  };
-  const activeName = FACTORY_PRESETS[active]?.name ?? 'Presets';
-  const arrowCls =
-    'flex items-center justify-center rounded-md border border-white/15 bg-black/40 text-white/55 transition-all hover:bg-white/10 hover:text-white';
-  return (
-    <div className="flex items-center gap-1">
-      <button type="button" onClick={() => step(-1)} title="Previous preset" className={arrowCls} style={{ height: 24, width: 22 }}>
-        <ChevronLeft size={14} />
-      </button>
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          title={activeName}
-          className="flex w-36 items-center gap-1.5 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.14em] text-white/70 transition-all hover:bg-white/10"
-        >
-          <span className="truncate">{activeName}</span>
-          <ChevronDown size={12} className={`shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
-        </button>
-        {open && (
-          <>
-            <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-            <div className="absolute right-0 top-8 z-50 w-52 rounded-lg border border-white/15 bg-[#060b14] p-1 shadow-2xl">
-              <div className="px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-white/40">Mastering Presets</div>
-              <div className="max-h-[60vh] overflow-y-auto">
-                {FACTORY_PRESETS.map((p, i) => (
-                  <button
-                    key={p.name}
-                    onClick={() => apply(i)}
-                    title={p.info}
-                    className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[10px] transition-all ${i === active ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10'}`}
-                  >
-                    <span className="flex-1 truncate">{p.name}</span>
-                    <span className="font-mono text-[8px] text-white/35">{p.targetLufs}L</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      <button type="button" onClick={() => step(1)} title="Next preset" className={arrowCls} style={{ height: 24, width: 22 }}>
-        <ChevronRight size={14} />
-      </button>
-    </div>
-  );
 }
 
 // The lower-window "multimeter" view — a 3-button mode switcher. Each mode
@@ -370,7 +306,7 @@ export default function ChainStudio({ engine, themeKey, meterW = 188, className 
               selected={selected}
               onSelect={handleSelect}
               meterSlot={METER_SLOT}
-              headerExtra={<PresetsMenu engine={engine} />}
+              headerExtra={<MasteringPresetsMenu engine={engine} className="w-[196px]" />}
               viewMode={viewMode}
               onViewModeChange={setViewMode}
               onAddInstance={engine.handleAddInstance}

@@ -27,7 +27,7 @@ export default function SectionWaveformEmpty({ loading }) {
 
   return (
     <div
-      className="relative flex h-[220px] items-center justify-center rounded-lg border border-white/15 overflow-hidden"
+      className="relative flex h-full min-h-0 items-center justify-center overflow-hidden rounded-lg border border-white/15"
       style={{
         background:
           `linear-gradient(${gridColor} 1px, transparent 1px) left top / 100% 44px,` +

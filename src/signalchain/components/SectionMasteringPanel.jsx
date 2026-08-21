@@ -199,8 +199,8 @@ export default function SectionMasteringPanel({ engine }) {
   };
 
   return (
-    <section className="sc-panel" style={{ background: 'linear-gradient(180deg, rgba(12,14,20,0.97), rgba(6,8,12,0.99))' }}>
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+    <section className="sc-panel flex h-[400px] flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(12,14,20,0.97), rgba(6,8,12,0.99))' }}>
+      <div className="mb-3 flex shrink-0 flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg" style={{ background: SECTION_COLORS.A + '22' }}><Waves className="w-4 h-4" style={{ color: SECTION_COLORS.A }} /></div>
           <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Section Mastering</h2>
@@ -225,7 +225,7 @@ export default function SectionMasteringPanel({ engine }) {
       </div>
 
       {/* per-letter preset controls — drag a letter onto a section to assign */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
+      <div className="mb-3 flex shrink-0 flex-wrap items-center gap-2">
         <span className="text-[10px] uppercase tracking-wider text-white/50 mr-1">Presets</span>
         {SECTION_LETTERS.map((L) => {
           const col = SECTION_COLORS[L];
@@ -253,7 +253,7 @@ export default function SectionMasteringPanel({ engine }) {
         <span className="text-[9px] font-mono text-white/40 ml-1">drag a letter onto a section · click to audition · drag white handles to move · drag ✕ for glide{enabled ? ' · render bakes per-section presets' : ''}</span>
       </div>
 
-      <div onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} className="rounded-lg overflow-hidden">
+      <div onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} className="min-h-0 flex-1 overflow-hidden rounded-lg">
         {peaks ? (
           <SectionWaveform
             peaks={peaks}
@@ -264,7 +264,6 @@ export default function SectionMasteringPanel({ engine }) {
             onGlideChange={onGlideChange}
             onSectionClick={applySection}
             getPlayback={engine.getPlayback}
-            height={220}
           />
         ) : (
           <SectionWaveformEmpty loading={loading} />

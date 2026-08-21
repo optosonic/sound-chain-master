@@ -12,6 +12,7 @@ import VUMeter from '@/signalchain/components/VUMeter.jsx';
 import DesktopHeader from '@/signalchain/components/DesktopHeader.jsx';
 import InfoButton from '@/signalchain/components/InfoButton.jsx';
 import PlayheadScrubber from '@/signalchain/components/PlayheadScrubber.jsx';
+import { AUDIO_IMPORT_ACCEPT } from '@/signalchain/audioFormats.js';
 
 /**
  * Full Desktop harness — native DesktopTopGrid 2×2 Wide + stacked studio pages.
@@ -92,7 +93,7 @@ export default function FullDesktopLayout({ engine, theme, mode, onModeChange, a
                   />
                 </div>
               )}
-              <input type="file" accept="audio/*" className="hidden" onChange={onFileInput} />
+              <input type="file" accept={AUDIO_IMPORT_ACCEPT} className="hidden" onChange={onFileInput} />
             </label>
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">

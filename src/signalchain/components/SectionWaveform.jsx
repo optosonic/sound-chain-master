@@ -18,11 +18,11 @@ import { SECTION_COLORS, mixHex } from '../sectionMasteringModel.js';
 export default function SectionWaveform({
   peaks, cues, glides, assignment,
   onCueChange, onGlideChange, onSectionClick,
-  getPlayback, height = 220,
+  getPlayback,
 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-  const [dims, setDims] = useState({ width: 0, height });
+  const [dims, setDims] = useState({ width: 0, height: 0 });
   const [drag, setDrag] = useState(null);
   const [hover, setHover] = useState(null);
   const stateRef = useRef({ cues, glides, assignment });
@@ -33,11 +33,11 @@ export default function SectionWaveform({
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
       const r = entries[0].contentRect;
-      setDims({ width: r.width, height });
+      setDims({ width: r.width, height: r.height });
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [height]);
+  }, []);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -243,7 +243,7 @@ export default function SectionWaveform({
         : 'pointer';
 
   return (
-    <div ref={containerRef} className="relative w-full" style={{ height }}>
+    <div ref={containerRef} className="relative h-full min-h-0 w-full">
       <canvas
         ref={canvasRef}
         className="w-full h-full rounded-lg touch-none"

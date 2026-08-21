@@ -30,7 +30,7 @@ export default function PluginLayout({ engine, theme, width = 1200, height = 800
             <ChainStudio engine={engine} themeKey={themeKey} meterW={212} className="h-full" />
           )}
           {page === 'section' && (
-            <div className="h-full overflow-auto">
+            <div className="h-full min-h-0 overflow-hidden [&_section]:!h-full">
               <SectionMasteringPanel engine={engine} />
             </div>
           )}

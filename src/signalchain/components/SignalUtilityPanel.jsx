@@ -77,32 +77,40 @@ export default function SignalUtilityPanel({ signalUtility }) {
             </select>
           </div>
 
-          <div className="shrink-0">
+          <div>
             <div className="mb-1 text-[9px] uppercase tracking-wider text-white/45">Waveform</div>
-            <div className="grid grid-cols-3 gap-1.5" style={{ gridTemplateRows: 'repeat(3, minmax(44px, 52px))' }}>
+            <div
+              className="grid h-[162px] gap-1.5"
+              style={{
+                gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                gridTemplateRows: 'repeat(3, minmax(0, 1fr))',
+              }}
+            >
               {WAVEFORMS.map((w) => {
                 const on = state.type === w.id;
                 return (
                   <button key={w.id} type="button"
                     onClick={() => { set('type', w.id); if (w.id === 'impulse') triggerImpulse(); }}
-                    className="relative box-border flex h-full min-h-[44px] flex-col items-center justify-center gap-0.5 overflow-hidden rounded-md px-1 py-1.5 text-[9px] font-bold uppercase tracking-wider text-white transition-all hover:brightness-110"
+                    className="relative box-border flex h-full min-h-0 w-full min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-md border px-1 py-1 text-[9px] font-bold uppercase tracking-wider text-white hover:brightness-110"
                     style={{
+                      boxSizing: 'border-box',
                       background: `linear-gradient(180deg, ${on ? 'rgba(34,211,238,0.22)' : 'rgba(34,211,238,0.12)'}, ${MTR_BODY})`,
+                      borderColor: on ? MTR_CYAN : 'rgba(34,211,238,0.35)',
                       boxShadow: on
-                        ? 'inset 0 0 0 2px rgba(34,211,238,0.42), inset 0 0 0 3.2px #22d3ee, inset 0 1px 0 rgba(34,211,238,0.55)'
-                        : 'inset 0 0 0 1.2px rgba(34,211,238,0.35), inset 0 1px 0 rgba(34,211,238,0.18)',
+                        ? 'inset 0 1px 0 rgba(34,211,238,0.55), inset 0 0 0 2px rgba(34,211,238,0.90)'
+                        : 'inset 0 1px 0 rgba(34,211,238,0.18)',
                       color: on ? '#ffffff' : 'rgba(255,255,255,0.62)',
                     }}
                   >
                     <span aria-hidden
-                      className={`absolute right-1 top-1 h-1.5 w-1.5 rounded-full ${
+                      className={`pointer-events-none absolute right-1 top-1 h-1.5 w-1.5 rounded-full ${
                         on
                           ? 'border border-emerald-300 bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]'
                           : 'border border-white/25 bg-white/10'
                       }`}
                     />
                     <WaveGlyph id={w.id} on={on} />
-                    <span>{w.label}</span>
+                    <span className="leading-none">{w.label}</span>
                   </button>
                 );
               })}
@@ -125,7 +133,6 @@ export default function SignalUtilityPanel({ signalUtility }) {
           </div>
 
           {isSweep && (
-            <div className="min-h-0 overflow-auto">
             <div className="grid grid-cols-2 gap-2 rounded-lg border border-white/10 bg-black/30 p-2">
               <Dial value={state.sweepStart} onChange={(v) => set('sweepStart', v)} min={1} max={20000} step={1} scale="log" label="Start" unit="Hz" size="small" accent={ACCENT} />
               <Dial value={state.sweepEnd} onChange={(v) => set('sweepEnd', v)} min={1} max={20000} step={1} scale="log" label="End" unit="Hz" size="small" accent={ACCENT} />
@@ -138,7 +145,6 @@ export default function SignalUtilityPanel({ signalUtility }) {
                   ))}
                 </div>
               </div>
-            </div>
             </div>
           )}
         </div>
@@ -179,7 +185,8 @@ function WaveGlyph({ id, on }) {
     strokeLinejoin: 'round',
   };
   return (
-    <svg viewBox="0 0 32 14" className="h-3.5 w-[88%]" aria-hidden style={{ filter: glow }}>
+    <span className="flex h-3.5 w-[88%] shrink-0 items-center justify-center overflow-hidden" style={{ filter: glow }}>
+    <svg viewBox="0 0 32 14" className="h-full w-full overflow-hidden" aria-hidden>
       {id === 'sine' && <path {...strokeProps} d="M1 7 C5 -1 11 -1 16 7 S27 15 31 7" />}
       {id === 'white' && (
         <>
@@ -208,11 +215,12 @@ function WaveGlyph({ id, on }) {
       )}
       {id === 'sweep' && (
         <>
-          <path {...strokeProps} d="M1 7 C4 2 6 12 9 7 C11 3 12 11 14 7 C15.2 4 16 10 17.2 7 C18 4.5 18.6 9.5 19.4 7 C20 5 20.5 9 21.2 7 C21.7 5.4 22.1 8.6 22.6 7 C23 5.8 23.3 8.2 23.7 7" />
-          <path fill={stroke} stroke="none" d="M31 7 L25 4.2 V9.8 Z" />
+          <path {...strokeProps} d="M1 7 C3.5 2.5 5.5 11.5 8 7 C10 3.5 11.5 10.5 13.5 7 C15 4.5 16 9.5 17.2 7 C18.2 5 18.8 9 19.6 7 C20.2 5.4 20.7 8.6 21.3 7 C21.8 5.8 22.2 8.2 22.6 7" />
+          <path fill={stroke} stroke="none" d="M30.5 7 L25 4.6 V9.4 Z" />
         </>
       )}
     </svg>
+    </span>
   );
 }
 

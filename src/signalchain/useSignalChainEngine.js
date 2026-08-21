@@ -21,6 +21,7 @@ import { defaultClip } from '@/signalchain/clipModel.js';
 import { defaultTape } from '@/signalchain/tapeModel.js';
 import { applyRecipeToChain } from '@/signalchain/mastering/applyRecipeToChain.js';
 import { decodeAiffToAudioBuffer, isAiffFile } from '@/signalchain/aiffDecoder.js';
+import { isImportableAudioFile } from '@/signalchain/audioFormats.js';
 import { createSignalUtility } from './signalUtility/signalUtilityEngine.js';
 
 // Map the stereo-imager UI window (spreadLo = left edge, width = right edge,
@@ -232,6 +233,7 @@ export function useSignalChainEngine() {
   // scales the effective dry/wet MIX of every used module (except the limiter)
   // by (1 + value/100), clamped 0..1. Applied via the effect below.
   const [masterEffect, setMasterEffectState] = useState(0);
+  const [factoryPreset, setFactoryPresetState] = useState(0);
   // Tracks whether the Signal Utility oscillator is currently enabled, so the
   // always-on meters/visualizers stay awake (out of standby) while a test tone
   // is flowing through the chain — not just on Play / Mic.
@@ -1189,6 +1191,7 @@ export function useSignalChainEngine() {
     chainRef.current?.loop?.updateMultiBandComp(LOOP_DEFAULT_MBC);
     setUsedMap({});
     setLoopUsedMap({});
+    setFactoryPresetState(0);
     wireAnalyzers();
   }, [wireAnalyzers]);
 
@@ -1435,7 +1438,7 @@ export function useSignalChainEngine() {
   const loadFile = useCallback(async (file) => {
     if (!file) return;
     const aiff = isAiffFile(file);
-    if (!aiff && !file.type.startsWith('audio/')) { setError('Please drop an audio file.'); return; }
+    if (!aiff && !isImportableAudioFile(file)) { setError('Please drop an audio file (WAV, AIFF, FLAC, OGG, MP3, M4A, MP4).'); return; }
     setError('');
     const wasPlaying = isPlaying;
     // Stop whichever path is running before swapping sources.
@@ -1701,6 +1704,7 @@ export function useSignalChainEngine() {
     handleStereoImagerChange, handleMon8Change,
     // mastering effect macro
     masterEffect, setMasterEffect: setMasterEffectState, getRenderState,
+    factoryPreset, setFactoryPreset: setFactoryPresetState,
     // section mastering (render integration)
     sectionMastering, setSectionMastering,
     // transport
