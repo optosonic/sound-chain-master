@@ -1,0 +1,912 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Saira:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --font-heading: ui-sans-serif, system-ui, sans-serif;
+    --font-body: ui-sans-serif, system-ui, sans-serif;
+    --font-display: ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Keep form fields editable/selectable so inputs still work. */
+  input, textarea, select, [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
+
+/* ── Sound Chain Master — visual identity themes ──
+   Each identity gets its own panel chrome, typography, heading colour and
+   signature full-screen overlay so the five look materially different. */
+.sc-panel {
+  padding: 1.25rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.sc-fx-overlay { pointer-events: none; }
+.sc-panel h2, .sc-title { color: rgba(255,255,255,0.82); }
+
+/* ===== 1. Precision Studio Dark — clean, crisp, cyan-lit ===== */
+[data-theme="dark"] { letter-spacing: 0.005em; }
+[data-theme="dark"] .sc-panel {
+  background: linear-gradient(180deg, rgba(18,26,42,0.66), rgba(8,12,22,0.72));
+  border: 1px solid rgba(56,224,255,0.16);
+  border-radius: 0.85rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.55), 0 0 18px rgba(56,224,255,0.05);
+}
+[data-theme="dark"] .sc-panel h2, [data-theme="dark"] .sc-title { color: #7dd3fc; }
+/* Precision Studio stays clean — no full-screen dot/texture overlay. */
+
+/* ===== 2. Ethereal Signal Glass — frosted, luminous, jewel-bright ===== */
+[data-theme="glass"] { letter-spacing: 0.012em; }
+[data-theme="glass"] .sc-panel {
+  background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  border-radius: 1.4rem;
+  backdrop-filter: blur(26px) saturate(140%);
+  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.40),
+    0 12px 40px rgba(120,40,200,0.30),
+    0 0 30px rgba(56,189,248,0.14);
+}
+[data-theme="glass"] .sc-panel h2, [data-theme="glass"] .sc-title { color: #f5d0fe; }
+[data-theme="glass"] .sc-fx-overlay {
+  position: fixed; inset: 0; z-index: 5;
+  background:
+    radial-gradient(520px 280px at 22% 16%, rgba(56,189,248,0.14), transparent 60%),
+    radial-gradient(460px 260px at 82% 30%, rgba(232,121,249,0.14), transparent 62%),
+    radial-gradient(560px 300px at 60% 92%, rgba(129,140,248,0.12), transparent 64%);
+}
+
+/* ===== 3. Forge Titanium — brushed gunmetal, amber, riveted bevels ===== */
+[data-theme="titanium"] { letter-spacing: 0.018em; }
+[data-theme="titanium"] .sc-panel {
+  position: relative;
+  background-color: #26292f;
+  background-image:
+    linear-gradient(155deg, rgba(255,255,255,0.07), rgba(0,0,0,0.45)),
+    url("https://media.base44.com/images/public/6a7e8481e986f3768f1465c4/1414eda60_generated_image.png");
+  background-size: cover;
+  background-blend-mode: overlay, normal;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  border-radius: 0.32rem;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.30),
+    inset 0 -1.5px 0 rgba(0,0,0,0.70),
+    inset 0 0 0 1px rgba(0,0,0,0.25),
+    0 10px 22px rgba(0,0,0,0.55),
+    0 0 16px rgba(212,160,74,0.08);
+}
+/* variety — cycle three real brushed-metal plates across the panels */
+[data-theme="titanium"] .sc-panel:nth-child(3n+2) {
+  background-image:
+    linear-gradient(155deg, rgba(255,255,255,0.07), rgba(0,0,0,0.45)),
+    url("https://media.base44.com/images/public/6a7e8481e986f3768f1465c4/d7eb72fea_generated_image.png");
+}
+[data-theme="titanium"] .sc-panel:nth-child(3n) {
+  background-image:
+    linear-gradient(155deg, rgba(255,255,255,0.07), rgba(0,0,0,0.45)),
+    url("https://media.base44.com/images/public/6a7e8481e986f3768f1465c4/a1db1b3c6_generated_image.png");
+}
+[data-theme="titanium"] .sc-panel h2, [data-theme="titanium"] .sc-title { color: #d4b572; text-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 0 1px rgba(0,0,0,0.85); }
+/* rivets in each corner */
+[data-theme="titanium"] .sc-panel::before,
+[data-theme="titanium"] .sc-panel::after {
+  content: ""; position: absolute; width: 5px; height: 5px; border-radius: 9999px;
+  background: radial-gradient(circle at 35% 35%, #d8dde3, #6a7079 70%, #2c2f34);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.6);
+}
+[data-theme="titanium"] .sc-panel { position: relative; }
+[data-theme="titanium"] .sc-panel::before { top: 8px; left: 8px; }
+[data-theme="titanium"] .sc-panel::after { bottom: 8px; right: 8px; }
+/* Forge Titanium: texture lives on the panel chrome (above), not a full-screen
+   overlay — so the EQ/Compressor/VU canvases are no longer striped. */
+
+/* Forge Titanium — effect panels: DARK CHARCOAL brushed metal, tinted with
+   each effect's accent hue. The metal image is multiply-blended with a dark
+   hue so it darkens to charcoal while keeping the brushed texture; the hue
+   becomes the colour of the metal. Upper panels stay on the light metal. */
+[data-theme="titanium"] [data-fx] {
+  background-color: #4a5650;
+  background-image:
+    linear-gradient(155deg, var(--fx-tint, #5a6660), #424d48),
+    url("https://media.base44.com/images/public/6a7e8481e986f3768f1465c4/1414eda60_generated_image.png");
+  background-size: cover;
+  background-blend-mode: multiply, normal;
+}
+[data-theme="titanium"] [data-fx="compressor"]  { --fx-tint: #1f5a76; }
+[data-theme="titanium"] [data-fx="limiter"]     { --fx-tint: #4f2433; }
+[data-theme="titanium"] [data-fx="saturation"]  { --fx-tint: #4f341c; }
+[data-theme="titanium"] [data-fx="clip"]        { --fx-tint: #2f4a36; }
+[data-theme="titanium"] [data-fx="tape"]        { --fx-tint: #4a3820; }
+[data-theme="titanium"] [data-fx="delay"]       { --fx-tint: #1f4263; }
+[data-theme="titanium"] [data-fx="reverb"]     { --fx-tint: #4a3078; }
+[data-theme="titanium"] [data-fx="eq"]         { --fx-tint: #422872; }
+[data-theme="titanium"] [data-fx="dynamiceq"]  { --fx-tint: #502878; }
+[data-theme="titanium"] [data-fx="multibandcomp"] { --fx-tint: #1f4a36; }
+[data-theme="titanium"] [data-fx="mon8"] { --fx-tint: #2a2f5a; }
+
+/* ===== Analogue Density — per-visual-identity subtle housing tints =====
+   The panel ships a fixed dark inline gradient; each identity subtly recolours
+   its housing + accent edge so the module reads in-theme with the other effect
+   panels. B&K Lab is handled by the general light-faceplate [data-fx] rule
+   above. Inline panel styles are overridden with !important. */
+
+/* Precision Studio Dark — cool blue-black, cyan hairline */
+[data-theme="dark"] [data-fx="analogueDensity"] {
+  background: linear-gradient(165deg, #141d2c 0%, #0c1320 55%, #070b14 100%) !important;
+  border-color: rgba(56,224,255,0.28) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.55), 0 0 18px rgba(56,224,255,0.06) !important;
+}
+/* Ethereal Signal Glass — frosted dark jewel, violet/pink edge */
+[data-theme="glass"] [data-fx="analogueDensity"] {
+  background: linear-gradient(165deg, rgba(40,26,60,0.92) 0%, rgba(20,12,34,0.94) 55%, rgba(12,8,22,0.96) 100%) !important;
+  border-color: rgba(245,208,254,0.30) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 12px 40px rgba(120,40,200,0.22), 0 0 24px rgba(56,189,248,0.10) !important;
+}
+/* Forge Titanium — charcoal brushed gunmetal, amber edge */
+[data-theme="titanium"] [data-fx="analogueDensity"] {
+  background-color: #2b2e34 !important;
+  background-image:
+    linear-gradient(155deg, rgba(255,255,255,0.06), rgba(0,0,0,0.45)),
+    url("https://media.base44.com/images/public/6a7e8481e986f3768f1465c4/1414eda60_generated_image.png") !important;
+  background-size: cover !important;
+  background-blend-mode: overlay, normal !important;
+  border-color: rgba(212,160,74,0.30) !important;
+  box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.22), inset 0 -1.5px 0 rgba(0,0,0,0.7), 0 10px 22px rgba(0,0,0,0.55), 0 0 16px rgba(212,160,74,0.10) !important;
+}
+/* Analog Rack 1987 — warm walnut, amber edge */
+[data-theme="retro"] [data-fx="analogueDensity"] {
+  background: linear-gradient(165deg, #2e2114 0%, #241a10 55%, #160f0a 100%) !important;
+  border-color: #7a5828 !important;
+  box-shadow: inset 0 2px 0 rgba(255,200,120,0.18), inset 0 -2px 0 rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.5), 0 8px 18px rgba(0,0,0,0.5) !important;
+}
+/* Neural Command HUD — black with cyan grid, neon edge */
+[data-theme="hud"] [data-fx="analogueDensity"] {
+  background:
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px) 0 0/100% 46px,
+    linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px) 0 0/46px 100%,
+    linear-gradient(180deg, rgba(0,16,24,0.92), rgba(0,6,12,0.95)) !important;
+  border-color: rgba(0,240,255,0.55) !important;
+  box-shadow: inset 0 0 0 1px rgba(0,240,255,0.10), inset 0 0 28px rgba(0,240,255,0.06), 0 0 22px rgba(0,240,255,0.18) !important;
+}
+
+/* ===== 4. Analog Rack 1987 — warm walnut, amber LED, CRT scanlines ===== */
+[data-theme="retro"] {
+  letter-spacing: 0.015em;
+}
+[data-theme="retro"] .sc-panel {
+  font-family: var(--font-mono);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(255,158,26,0.10), transparent 60%),
+    linear-gradient(165deg, #2e2114 0%, #241a10 55%, #160f0a 100%);
+  border: 1px solid #7a5828;
+  border-radius: 0.5rem;
+  box-shadow:
+    inset 0 2px 0 rgba(255,200,120,0.22),
+    inset 0 -2px 0 rgba(0,0,0,0.6),
+    inset 0 0 30px rgba(0,0,0,0.5),
+    0 8px 18px rgba(0,0,0,0.5);
+}
+[data-theme="retro"] .sc-panel h2, [data-theme="retro"] .sc-title { color: #ffb84d; text-shadow: 0 0 8px rgba(255,158,26,0.4); }
+[data-theme="retro"] .sc-fx-overlay {
+  position: fixed; inset: 0; z-index: 5;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.5) 100%);
+  mix-blend-mode: multiply; opacity: 0.55;
+}
+
+/* ===== 5. Neural Command HUD — black, neon cyan, angular, tech grid ===== */
+[data-theme="hud"] {
+  letter-spacing: 0.03em;
+  font-family: var(--font-mono);
+}
+[data-theme="hud"] .sc-panel {
+  position: relative;
+  background:
+    linear-gradient(rgba(0,240,255,0.028) 1px, transparent 1px) 0 0/100% 46px,
+    linear-gradient(90deg, rgba(0,240,255,0.028) 1px, transparent 1px) 0 0/46px 100%,
+    radial-gradient(130% 90% at 50% 0%, rgba(0,44,64,0.55), transparent 55%),
+    linear-gradient(180deg, rgba(0,16,24,0.92), rgba(0,6,12,0.95));
+  border: 1px solid rgba(0, 240, 255, 0.62);
+  border-radius: 0.18rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,240,255,0.10),
+    inset 0 0 28px rgba(0,240,255,0.07),
+    0 0 22px rgba(0,240,255,0.18),
+    0 0 0 1px rgba(0,240,255,0.08);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
+[data-theme="hud"] .sc-panel h2, [data-theme="hud"] .sc-title { color: #7df9ff; text-shadow: 0 0 10px rgba(0,240,255,0.75), 0 0 2px rgba(0,0,0,0.9); }
+/* visible cyan edges on interactive elements — dark-on-dark buttons now read clearly */
+[data-theme="hud"] .sc-panel button {
+  outline: 1px solid rgba(0,240,255,0.30);
+  outline-offset: 0;
+  transition: outline-color .15s ease;
+}
+[data-theme="hud"] .sc-panel button:hover { outline: 1px solid rgba(0,240,255,0.72); }
+[data-theme="hud"] .sc-panel input[type="range"] { accent-color: #00f0ff; }
+/* angular corner brackets */
+[data-theme="hud"] .sc-panel::before,
+[data-theme="hud"] .sc-panel::after {
+  content: ""; position: absolute; width: 14px; height: 14px;
+  border: 2px solid #00f0ff; pointer-events: none;
+}
+[data-theme="hud"] .sc-panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+[data-theme="hud"] .sc-panel::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+/* Neural Command HUD: grid + scanlines now live on the panel chrome (above),
+   not a full-screen overlay — canvases stay clean. */
+
+/* ===== 6. Brüel & Kjær — dark console, light mint faceplates, black labels ===== */
+[data-theme="bk"] { letter-spacing: 0.01em; }
+[data-theme="bk"] .sc-panel,
+[data-theme="bk"] .sc-stable,
+[data-theme="bk"] [data-fx] {
+  position: relative;
+  background-color: #C6D4C6 !important;
+  background-image:
+    radial-gradient(circle closest-side at 50% 50%, #b4b7b4 0%, #8a8d8a 45%, #6a6d6a 72%, transparent 82%),
+    radial-gradient(circle closest-side at 50% 50%, #b4b7b4 0%, #8a8d8a 45%, #6a6d6a 72%, transparent 82%),
+    radial-gradient(circle closest-side at 50% 50%, #b4b7b4 0%, #8a8d8a 45%, #6a6d6a 72%, transparent 82%),
+    radial-gradient(circle closest-side at 50% 50%, #b4b7b4 0%, #8a8d8a 45%, #6a6d6a 72%, transparent 82%),
+    linear-gradient(160deg, rgba(255,255,255,0.34), rgba(0,0,0,0.05)) !important;
+  background-size: 10px 10px, 10px 10px, 10px 10px, 10px 10px, 100% 100% !important;
+  background-position: 8px 8px, calc(100% - 8px) 8px, 8px calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), 0 0 !important;
+  background-repeat: no-repeat !important;
+  border: 1.5px solid #1A1A1A;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(26,26,26,0.05);
+}
+[data-theme="bk"] .sc-panel h2, [data-theme="bk"] .sc-title { color: #1A1A1A; text-shadow: none; filter: none !important; letter-spacing: 0.06em; }
+/* crisp text — kill the dark drop-shadow halos that blur dark text on the light faceplate */
+[data-theme="bk"] .sc-panel [class*="drop-shadow"],
+[data-theme="bk"] .sc-stable [class*="drop-shadow"],
+[data-theme="bk"] [data-fx] [class*="drop-shadow"] { filter: none !important; text-shadow: none !important; }
+/* corner mounting screws — now drawn as a 4-corner background-image layer on
+   every B&K panel surface (sc-panel / sc-stable / [data-fx]) above, so all four
+   corners get a screw on every panel instead of only two. */
+
+/* B&K effect panels — corner screws breathing room is handled by each
+   panel's own p-4 padding uniformly across all themes (no theme-specific
+   padding override). */
+[data-theme="bk"] .sc-fx-overlay {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(125% 95% at 50% 25%, #000 25%, transparent 80%);
+  -webkit-mask-image: radial-gradient(125% 95% at 50% 25%, #000 25%, transparent 80%);
+}
+/* lighter green-graphite header on the green-graphite console */
+[data-theme="bk"] header {
+  background: linear-gradient(120deg, #74817a, #626f66 45%, #525e55) !important;
+  border: 1.5px solid #1A1A1A !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 24px rgba(0,0,0,0.4) !important;
+}
+/* Signal Chain panel — a darker green inset, distinct from the light faceplates */
+[data-theme="bk"] .sc-chain {
+  background: linear-gradient(160deg, #5e6e62, #46554d) !important;
+  border: 1.5px solid #1A1A1A !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12) !important;
+}
+/* Clip / Delay / Reverb chart canvases — the light faceplate washes out the
+   pale graph lines and readouts. Force these canvases dark with a black
+   console outline so the curves, control points and parameter values read.
+   Selector is intentionally more specific (adds .rounded-lg) than the general
+   recessed-surface rule below, which would otherwise re-lighten these
+   bg-black containers and defeat the dark canvas. */
+[data-theme="bk"] [data-fx="delay"] .rounded-lg[class*="bg-black/"],
+[data-theme="bk"] [data-fx="reverb"] .rounded-lg[class*="bg-black/"],
+[data-theme="bk"] [data-fx="compressor"] .rounded-lg[class*="bg-black/"],
+[data-theme="bk"] [data-fx="saturation"] .rounded-lg[class*="bg-black/"] {
+  background-color: rgba(78,86,82,0.82) !important;
+  background-image: none !important;
+  border: 1.5px solid #1A1A1A !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 14px rgba(0,0,0,0.3) !important;
+}
+/* Clip canvas — a lighter graphite than the Delay/Reverb canvases, still dark
+   enough for the neon lime/cyan transfer + filter curves to read. */
+[data-theme="bk"] [data-fx="clip"] .rounded-lg[class*="bg-black/"] {
+  background-color: rgba(50,60,50,0.88) !important;
+  background-image: none !important;
+  border: 1.5px solid #1A1A1A !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 14px rgba(0,0,0,0.3) !important;
+}
+/* B&K Lab — Clip Distortion icon: the pale-lime inline background + icon are
+   invisible on the light faceplate. Give the icon chip a visible emerald tint
+   and a dark emerald icon that reads on the mint faceplate. */
+[data-theme="bk"] [data-fx="clip"] .sc-fx-icon {
+  background-color: rgba(16,185,129,0.22) !important;
+}
+[data-theme="bk"] [data-fx="clip"] .sc-fx-icon svg {
+  color: #047857 !important;
+}
+/* Once the canvas is dark, the general "flip text-white/ to dark" rule would
+   make in-canvas labels (DRY · ECHOES · TAIL, etc.) invisible — keep them light
+   inside these dark canvases. */
+[data-theme="bk"] [data-fx="clip"] .rounded-lg[class*="bg-black/"] [class*="text-white/"],
+[data-theme="bk"] [data-fx="delay"] .rounded-lg[class*="bg-black/"] [class*="text-white/"],
+[data-theme="bk"] [data-fx="reverb"] .rounded-lg[class*="bg-black/"] [class*="text-white/"],
+[data-theme="bk"] [data-fx="compressor"] .rounded-lg[class*="bg-black/"] [class*="text-white/"],
+[data-theme="bk"] [data-fx="saturation"] .rounded-lg[class*="bg-black/"] [class*="text-white/"] {
+  color: rgba(255,255,255,0.72) !important;
+}
+
+/* Visualizer canvases — dark graphite across ALL Visual Identity themes
+   (Compressor, Saturation, Delay, Reverb, Clip). On the B&K theme the more
+   specific rules above still win (black border + inset shadow); on every
+   other theme this gives the same graphite canvas so the panels read
+   consistently instead of the near-transparent bg-black tint. */
+[data-fx="compressor"] .rounded-lg[class*="bg-black/"],
+[data-fx="saturation"] .rounded-lg[class*="bg-black/"],
+[data-fx="delay"] .rounded-lg[class*="bg-black/"],
+[data-fx="reverb"] .rounded-lg[class*="bg-black/"],
+[data-fx="clip"] .rounded-lg[class*="bg-black/"] {
+  background-color: rgba(78,86,82,0.82) !important;
+  background-image: none !important;
+}
+
+/* B&K Lab only — Compressor transfer curve: fully opaque light blue (matching
+   the Delay accent) so the line reads cleanly against the dark graphite
+   canvas. The curve stroke is driven by the --cmp-curve CSS variable set on
+   the panel; the polyline reads it via inline style (no gradient to fight). */
+[data-theme="bk"] [data-fx="compressor"] { --cmp-curve: #7dd3fc; }
+/* B&K Lab — Final Output visualizer: when idle (no signal) the canvas is
+   cleared, so the panel faceplate shows through. Match the Mastering Studio
+   panel sage exactly so the empty analyzer reads as the same surface. */
+[data-theme="bk"] .sc-output-stage {
+  background: linear-gradient(180deg, #6b7a85, #4a5760) !important;
+  box-shadow: inset 0 0 0 1px rgba(112,195,255,0.28), inset 0 2px 14px rgba(0,0,0,0.45) !important;
+}
+/* Final Output visualizer — distinct inset "screen" per visual identity.
+   The analyzer canvas is transparent when idle (no signal), so without a
+   distinct surface the graphic field reads as flat panel housing. Each dark
+   identity gets a subtle recessed screen — a touch darker than its housing,
+   framed by a thin inset shadow + accent-tinted hairline — so the plot reads
+   as set into the faceplate. B&K keeps its lighter sage inset above. */
+[data-theme="dark"] .sc-output-stage {
+  background: linear-gradient(180deg, rgba(10,16,28,0.72), rgba(4,8,16,0.86)) !important;
+  box-shadow: inset 0 0 0 1px rgba(56,224,255,0.12), inset 0 2px 12px rgba(0,0,0,0.45) !important;
+}
+[data-theme="glass"] .sc-output-stage {
+  background: linear-gradient(180deg, rgba(34,22,52,0.5), rgba(16,10,30,0.66)) !important;
+  box-shadow: inset 0 0 0 1px rgba(245,208,254,0.16), inset 0 2px 12px rgba(0,0,0,0.4) !important;
+}
+[data-theme="titanium"] .sc-output-stage {
+  background: linear-gradient(180deg, #33363c, #23252b) !important;
+  box-shadow: inset 0 0 0 1px rgba(212,160,74,0.14), inset 0 2px 12px rgba(0,0,0,0.4) !important;
+}
+[data-theme="retro"] .sc-output-stage {
+  background: linear-gradient(165deg, #1a120a, #0f0905) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,158,26,0.12), inset 0 2px 12px rgba(0,0,0,0.5) !important;
+}
+[data-theme="hud"] .sc-output-stage {
+  background: linear-gradient(180deg, rgba(0,10,14,0.85), rgba(0,4,8,0.95)) !important;
+  box-shadow: inset 0 0 0 1px rgba(0,240,255,0.22), inset 0 2px 14px rgba(0,0,0,0.55) !important;
+}
+/* Audio Source header — the "Engine Ready" badge + info trigger wash out on the
+   light mint faceplate. Restyle both to the B&K Lab button aesthetic: a pale
+   mint pill with a graphite-green border and medium-dark graphite-green text. */
+[data-theme="bk"] .sc-source-status,
+[data-theme="bk"] .sc-source-info button {
+  background: linear-gradient(160deg, #eaf0ea, #dfe6df) !important;
+  border: 1.5px solid #3a4d46 !important;
+  color: #2f4639 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.18) !important;
+  text-shadow: none !important;
+}
+[data-theme="bk"] .sc-source-info button:hover {
+  border-color: #2f4639 !important;
+  background: linear-gradient(160deg, #eef3ee, #e4ebe5) !important;
+}
+/* ── Power (on/off) + info buttons: on the light faceplate the default
+   white-on-white OFF styling is invisible. Give the OFF state the B&K Lab
+   button aesthetic — pale mint pill, graphite-green border, dark green text.
+   The ON state keeps each effect's accent (set inline, beats these vars). ── */
+[data-theme="bk"] {
+  --sc-off-bg: linear-gradient(160deg, #eaf0ea, #dfe6df);
+  --sc-off-border: #3a4d46;
+  --sc-off-text: #2f4639;
+  /* Tape Machine canvas — default is near-black; lift it to a medium bronze on
+     the light faceplate so it reads "in between", not washed-out nor jet-black. */
+  --tape-canvas-bg: #5a4a36;
+  --tape-canvas-grad: linear-gradient(180deg, rgba(60,48,32,0.30), rgba(60,48,32,0.52));
+}
+[data-theme="bk"] .sc-power-btn { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.18); }
+[data-theme="bk"] .sc-info-btn {
+  background: linear-gradient(160deg, #eaf0ea, #dfe6df) !important;
+  border: 1.5px solid #3a4d46 !important;
+  color: #2f4639 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.18) !important;
+}
+[data-theme="bk"] .sc-info-btn:hover {
+  border-color: #2f4639 !important;
+  background: linear-gradient(160deg, #eef3ee, #e4ebe5) !important;
+}
+/* ── flip text + recessed surfaces onto the light faceplate ── */
+[data-theme="bk"] .sc-panel [class*="text-white/"],
+[data-theme="bk"] .sc-stable [class*="text-white/"],
+[data-theme="bk"] [data-fx] [class*="text-white/"] { color: #1A1A1A !important; }
+[data-theme="bk"] .sc-panel [class*="bg-black/"],
+[data-theme="bk"] .sc-stable [class*="bg-black/"],
+[data-theme="bk"] [data-fx] [class*="bg-black/"] { background-color: rgba(26,26,26,0.05) !important; background-image: none !important; }
+[data-theme="bk"] .sc-panel [class*="border-white/"],
+[data-theme="bk"] .sc-stable [class*="border-white/"],
+[data-theme="bk"] [data-fx] [class*="border-white/"] { border-color: rgba(26,26,26,0.22) !important; }
+/* the upload drop-zone uses an inline dark gradient — force it onto the faceplate */
+[data-theme="bk"] .sc-panel label.cursor-pointer {
+  background: linear-gradient(160deg,#d4dfce,#c4d1bf) !important;
+  border-color: rgba(26,26,26,0.25) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 0 30px rgba(0,0,0,0.08) !important;
+}
+[data-theme="bk"] .sc-panel label.cursor-pointer [class*="text-white"] { color: #1A1A1A !important; }
+/* accent text → deeper shades that read on the mint faceplate */
+[data-theme="bk"] .sc-panel [class*="text-sky-4"], [data-theme="bk"] .sc-panel [class*="text-sky-3"], [data-theme="bk"] [data-fx] [class*="text-sky-4"], [data-theme="bk"] [data-fx] [class*="text-sky-3"] { color:#0284c7 !important; }
+[data-theme="bk"] .sc-panel [class*="text-cyan-4"], [data-theme="bk"] .sc-panel [class*="text-cyan-3"], [data-theme="bk"] [data-fx] [class*="text-cyan-4"], [data-theme="bk"] [data-fx] [class*="text-cyan-3"] { color:#0891b2 !important; }
+[data-theme="bk"] .sc-panel [class*="text-blue-4"], [data-theme="bk"] .sc-panel [class*="text-blue-3"], [data-theme="bk"] [data-fx] [class*="text-blue-4"], [data-theme="bk"] [data-fx] [class*="text-blue-3"] { color:#2563eb !important; }
+[data-theme="bk"] .sc-panel [class*="text-violet-4"], [data-theme="bk"] .sc-panel [class*="text-violet-3"], [data-theme="bk"] [data-fx] [class*="text-violet-4"], [data-theme="bk"] [data-fx] [class*="text-violet-3"] { color:#2563eb !important; }
+[data-theme="bk"] .sc-panel [class*="text-purple-4"], [data-theme="bk"] .sc-panel [class*="text-purple-3"], [data-theme="bk"] [data-fx] [class*="text-purple-4"], [data-theme="bk"] [data-fx] [class*="text-purple-3"] { color:#0d9488 !important; }
+[data-theme="bk"] .sc-panel [class*="text-fuchsia-4"], [data-theme="bk"] .sc-panel [class*="text-fuchsia-3"], [data-theme="bk"] [data-fx] [class*="text-fuchsia-4"], [data-theme="bk"] [data-fx] [class*="text-fuchsia-3"] { color:#d97706 !important; }
+[data-theme="bk"] .sc-panel [class*="text-pink-4"], [data-theme="bk"] .sc-panel [class*="text-pink-3"], [data-theme="bk"] [data-fx] [class*="text-pink-4"], [data-theme="bk"] [data-fx] [class*="text-pink-3"] { color:#d97706 !important; }
+[data-theme="bk"] .sc-panel [class*="text-rose-4"], [data-theme="bk"] .sc-panel [class*="text-rose-3"], [data-theme="bk"] [data-fx] [class*="text-rose-4"], [data-theme="bk"] [data-fx] [class*="text-rose-3"] { color:#dc2626 !important; }
+[data-theme="bk"] .sc-panel [class*="text-merlot-4"], [data-theme="bk"] .sc-panel [class*="text-merlot-3"], [data-theme="bk"] [data-fx] [class*="text-merlot-4"], [data-theme="bk"] [data-fx] [class*="text-merlot-3"] { color:#6E2434 !important; }
+[data-theme="bk"] .sc-panel [class*="text-emerald-4"], [data-theme="bk"] .sc-panel [class*="text-emerald-3"], [data-theme="bk"] [data-fx] [class*="text-emerald-4"], [data-theme="bk"] [data-fx] [class*="text-emerald-3"] { color:#059669 !important; }
+[data-theme="bk"] .sc-panel [class*="text-amber-4"], [data-theme="bk"] .sc-panel [class*="text-amber-3"], [data-theme="bk"] [data-fx] [class*="text-amber-4"], [data-theme="bk"] [data-fx] [class*="text-amber-3"] { color:#d97706 !important; }
+[data-theme="bk"] .sc-panel [class*="text-orange-4"], [data-theme="bk"] .sc-panel [class*="text-orange-3"], [data-theme="bk"] [data-fx] [class*="text-orange-4"], [data-theme="bk"] [data-fx] [class*="text-orange-3"] { color:#ea580c !important; }
+[data-theme="bk"] .sc-panel [class*="text-lime-4"], [data-theme="bk"] .sc-panel [class*="text-lime-3"], [data-theme="bk"] [data-fx] [class*="text-lime-4"], [data-theme="bk"] [data-fx] [class*="text-lime-3"] { color:#65a30d !important; }
+[data-theme="bk"] .sc-panel [class*="text-teal-4"], [data-theme="bk"] .sc-panel [class*="text-teal-3"], [data-theme="bk"] [data-fx] [class*="text-teal-4"], [data-theme="bk"] [data-fx] [class*="text-teal-3"] { color:#0d9488 !important; }
+/* B&K — VU Meter: the OUTER panel is the standard mint faceplate with the four
+   corner screws (left to the shared .sc-panel rule above). The INNER .sc-vu-panel
+   keeps its default brushed-steel faceplate UNCHANGED (not darkened) — only its
+   drop shadow is removed so it sits flush/integrated, its own bezel screws are
+   hidden (screws live on the outer case), and it is pulled up toward the header
+   to match the Master Level Meter's inner-canvas placement. */
+[data-theme="bk"] .sc-vu-panel {
+  box-shadow: none !important;
+}
+/* the inner faceplate's four bezel screws are shown, matching the other themes.
+   On the light brushed-steel B&K faceplate the default dark zinc screws read
+   too heavy — lighten them to a brushed-silver finish. */
+[data-theme="bk"] .sc-vu-panel > span {
+  background: linear-gradient(to bottom, #eef1ee, #c4c7c4) !important;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.25) !important;
+}
+
+/* keep the inner control bar dark on the brushed-steel faceplate */
+[data-theme="bk"] .sc-panel:has(.sc-vu-panel) [class*="bg-black/"] { background-color: rgba(0,0,0,0.6) !important; background-image: none !important; }
+/* meter labels read on the brushed-steel faceplate */
+[data-theme="bk"] .sc-panel:has(.sc-vu-panel) .sc-vu-label { color: #333 !important; }
+
+
+/* B&K Lab — Mastering Studio: keep it DARK like the other 5 visual identities
+   instead of the light mint faceplate. The panel keeps its inline dark gradient;
+   this re-asserts a dark surface + light text and reverts the child element
+   flips (text/bg/border) the general B&K light-faceplate rules would otherwise
+   apply to this panel's descendants (labels, preset bar, dropdown, etc.). */
+[data-theme="bk"] .sc-mastering-studio {
+  background: linear-gradient(160deg, #24272d 0%, #191c21 50%, #101216 100%) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  color: #e0e0e0 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.55) !important;
+}
+[data-theme="bk"] .sc-mastering-studio [class*="text-white"] {
+  color: rgba(255,255,255,0.88) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8) !important;
+}
+[data-theme="bk"] .sc-mastering-studio [class*="bg-black/"] {
+  background-color: rgba(0,0,0,0.4) !important;
+  background-image: none !important;
+}
+[data-theme="bk"] .sc-mastering-studio [class*="border-white/"] {
+  border-color: rgba(255,255,255,0.18) !important;
+}
+
+/* ── VU Meter panel surface — varies with the visual identity ──
+   Only the outer backing plate (not the dial faces) re-skins per theme. */
+.sc-vu-panel {
+  background:
+    repeating-linear-gradient(90deg,#c9c9cf 0px,#d4d4da 2px,#c2c2c8 4px,#d8d8de 6px),
+    linear-gradient(180deg,#dadde2,#a9acb2);
+}
+.sc-vu-panel--rect { background: linear-gradient(180deg,#2a2a2a,#141414); }
+.sc-vu-label { color: #333; }
+
+/* Precision Studio Dark — cool blue-tinted brushed steel */
+[data-theme="dark"] .sc-vu-panel:not(.sc-vu-panel--rect) {
+  background:
+    repeating-linear-gradient(90deg,#aab8c6 0px,#c2cdda 2px,#9aa8b6 4px,#c6d2de 6px),
+    linear-gradient(180deg,#c8d4e0,#7a8694);
+}
+[data-theme="dark"] .sc-vu-label { color: #dde7f0; }
+
+/* Ethereal Signal Glass — frosted jewel glass. OPAQUE (no backdrop-filter): a
+   translucent backdrop-filtered VU plate re-rasterises every animation frame
+   (the needle moves via rAF) and the tiling seam between backdrop tiles shows
+   up as a sharp horizontal colour shift — the "flicker". An opaque pinstriped
+   jewel-steel plate keeps the look and never recomputes a backdrop. */
+[data-theme="glass"] .sc-vu-panel:not(.sc-vu-panel--rect) {
+  background:
+    repeating-linear-gradient(90deg, #cbc8db 0px, #bab6cc 2px, #aca8c4 4px, #c6c3d8 6px),
+    linear-gradient(180deg, #d9d6ec, #a6a2c0);
+}
+[data-theme="glass"] .sc-vu-label { color: #2a2a3a; }
+
+/* Forge Titanium — brushed gunmetal */
+[data-theme="titanium"] .sc-vu-panel:not(.sc-vu-panel--rect) {
+  background:
+    repeating-linear-gradient(90deg,#3a3d44 0px,#4a4e57 2px,#33363c 4px,#52565f 6px),
+    linear-gradient(180deg,#4a4e57,#2a2d33);
+}
+[data-theme="titanium"] .sc-vu-label { color: #e4d6b0; }
+
+/* Analog Rack 1987 — warm walnut */
+[data-theme="retro"] .sc-vu-panel:not(.sc-vu-panel--rect) {
+  background:
+    linear-gradient(165deg,#3a2a18 0%,#2a1d10 55%,#1a120a 100%),
+    repeating-linear-gradient(90deg, rgba(255,200,120,0.06) 0px, transparent 2px);
+}
+[data-theme="retro"] .sc-vu-label { color: #ffb84d; }
+
+/* Neural Command HUD — dark with cyan grid */
+[data-theme="hud"] .sc-vu-panel:not(.sc-vu-panel--rect) {
+  background:
+    linear-gradient(rgba(0,240,255,0.05) 1px, transparent 1px) 0 0/100% 22px,
+    linear-gradient(90deg, rgba(0,240,255,0.05) 1px, transparent 1px) 0 0/22px 100%,
+    linear-gradient(180deg,#04141a,#02080c);
+}
+[data-theme="hud"] .sc-vu-label { color: #7df9ff; }
+
+/* ── VU Meter panel surface — RECT variant.
+   The RECT plate is ALWAYS a distinct, DARKER companion to the Round plate
+   of the same identity — never the same colour, never lighter. ── */
+/* Precision Studio — charcoal companion to the Round blue-steel plate */
+[data-theme="dark"] .sc-vu-panel--rect {
+  background: linear-gradient(180deg,#2a2a2a,#141414);
+  box-shadow: inset 0 0 0 1px rgba(56,224,255,0.16), inset 0 0 18px rgba(0,0,0,0.55);
+}
+/* Ethereal Glass — dark frosted jewel glass (opaque — see round-plate note) */
+[data-theme="glass"] .sc-vu-panel--rect {
+  background:
+    repeating-linear-gradient(90deg, #2a2638 0px, #343044 2px, #221e30 4px, #383348 6px),
+    linear-gradient(180deg, #2c2740, #171325);
+  box-shadow: inset 0 0 0 1px rgba(245,208,254,0.18);
+}
+/* Forge Titanium — near-black gunmetal, darker than the Round brushed metal */
+[data-theme="titanium"] .sc-vu-panel--rect {
+  background:
+    repeating-linear-gradient(90deg, rgba(212,181,114,0.05) 0px, transparent 2px, rgba(212,181,114,0.03) 4px),
+    linear-gradient(180deg,#1a1d22,#0c0e12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 18px rgba(0,0,0,0.7);
+}
+/* Analog Rack 1987 — deep burnt-walnut, darker than the Round walnut */
+[data-theme="retro"] .sc-vu-panel--rect {
+  background:
+    linear-gradient(165deg,#1c130a 0%,#140d07 55%,#080503 100%),
+    repeating-linear-gradient(90deg, rgba(255,184,77,0.04) 0px, transparent 2px);
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.6);
+}
+/* Neural Command HUD — near-black with a bright cyan grid, darker than the Round */
+[data-theme="hud"] .sc-vu-panel--rect {
+  background:
+    linear-gradient(rgba(0,240,255,0.16) 1px, transparent 1px) 0 0/100% 18px,
+    linear-gradient(90deg, rgba(0,240,255,0.16) 1px, transparent 1px) 0 0/18px 100%,
+    linear-gradient(180deg,#020a0e,#000204);
+  box-shadow: inset 0 0 0 1px rgba(0,240,255,0.28), inset 0 0 20px rgba(0,0,0,0.8);
+}
+[data-theme="dark"] .sc-vu-panel--rect .sc-vu-label { color: #7dd3fc; }
+[data-theme="glass"] .sc-vu-panel--rect .sc-vu-label { color: #f5d0fe; }
+[data-theme="titanium"] .sc-vu-panel--rect .sc-vu-label { color: #e4c98a; }
+[data-theme="retro"] .sc-vu-panel--rect .sc-vu-label { color: #ffb84d; }
+[data-theme="hud"] .sc-vu-panel--rect .sc-vu-label { color: #7df9ff; }
+[data-theme="bk"] .sc-vu-panel--rect {
+  background:
+    repeating-linear-gradient(90deg, #38504a 0px, #46605a 2px, #2e443c 4px, #506a60 6px),
+    linear-gradient(180deg, #42584e, #2c3c30);
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.45);
+}
+[data-theme="bk"] .sc-vu-panel--rect .sc-vu-label { color: #d5ddd5 !important; }
+
+/* Parallel-chain bridge connectors — animated flow along the send/return paths. */
+.sc-bridge-flow { animation: sc-bridge-flow 0.8s linear infinite; }
+@keyframes sc-bridge-flow { to { stroke-dashoffset: -10; } }
+
+/* Flowing dashed decay curves (Delay / Reverb visualizers). */
+.sc-dash-flow { animation-name: sc-dash-flow; animation-timing-function: linear; animation-iteration-count: infinite; }
+@keyframes sc-dash-flow { to { stroke-dashoffset: -24; } }
+
+/* Vacuum-tube warm flicker — subtle alive glow when the tube is lit.
+   Cheap (filter brightness/saturate only, GPU-composited); each tube gets
+   its own duration/delay so the two never pulse in lock-step. */
+@keyframes sc-tube-flicker {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  18% { filter: brightness(1.09) saturate(1.05); }
+  42% { filter: brightness(0.93) saturate(0.98); }
+  66% { filter: brightness(1.06) saturate(1.03); }
+  84% { filter: brightness(0.96) saturate(0.99); }
+}
+.sc-tube-flicker { animation: sc-tube-flicker 3.4s ease-in-out infinite; }
+
+/* Visual Identity controls are theme-switchers themselves, so they must stay
+   neutral across every theme: no mono font, no scanline/grid overlay bleeding
+   through, no themed button outlines or corner brackets. They render above the
+   full-screen theme overlay (z-10 > z-5) and use a fixed glass-card look. */
+.sc-stable {
+  position: relative;
+  z-index: 10;
+  padding: 1.25rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.55);
+  font-family: var(--font-body) !important;
+}
+.sc-stable button,
+.sc-stable button:hover {
+  font-family: var(--font-body) !important;
+  outline: none !important;
+}
+.sc-stable::before,
+.sc-stable::after { display: none !important; }
+
+/* BandDotMenu — the floating EQ/Dynamic-EQ band editor is draggable by its
+   chrome; its buttons keep a pointer cursor so they don't read as draggable. */
+.band-dot-menu button { cursor: pointer; }
+
+/* ── TC Native Reverb — brushed-aluminum faceplate + cool-blue faders ──
+   A fixed reverb-specific skin: looks like TC Works hardware regardless of
+   the global visual identity. !important beats the per-theme [data-fx="reverb"]
+   rules so the brushed plate + blue faders hold across every identity. */
+.tc-panel {
+  position: relative;
+  background-color: #9aa0a6 !important;
+  background-image:
+    /* true fine brushed grain — random fractal satin, NOT parallel lines */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12 0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E"),
+    /* smooth directional studio lighting — bright top catch, shaded underside */
+    linear-gradient(180deg, #d6dbdf 0%, #b6bbc0 30%, #9aa0a6 55%, #868c92 82%, #767c82 100%) !important;
+  background-blend-mode: overlay, normal;
+  border: 1px solid #3a3d42 !important;
+  border-radius: 6px !important;
+  box-shadow:
+    /* top bevel highlight */
+    inset 0 1.5px 0 rgba(255,255,255,0.65),
+    inset 0 2px 1px rgba(255,255,255,0.25),
+    /* bottom inner shadow */
+    inset 0 -2px 1px rgba(0,0,0,0.55),
+    inset 0 -1px 0 rgba(0,0,0,0.4),
+    /* hairline rim */
+    inset 0 0 0 1px rgba(0,0,0,0.22),
+    /* outer drop + edge ambient occlusion */
+    0 1px 0 rgba(255,255,255,0.12),
+    0 12px 28px rgba(0,0,0,0.6),
+    0 2px 6px rgba(0,0,0,0.4) !important;
+  color: #4a4f56;
+  font-family: 'Saira', system-ui, sans-serif;
+}
+/* Engraved hardware title — wide, well-kerned Saira (not condensed), debossed
+   into the brushed metal. The dual text-shadow (light bottom edge catching the
+   recess highlight + soft shadow inside the top) reads as laser-etched into
+   the faceplate — softer, lower-contrast than solid dark print. */
+.tc-panel .tc-title {
+  font-family: 'Chakra Petch', 'Saira', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #464b53;
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.55), 0 1px 1px rgba(0,0,0,0.28);
+}
+.tc-panel .tc-label {
+  font-family: 'Chakra Petch', 'Saira', system-ui, sans-serif;
+  color: #363b42;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.28), 0 1px 1px rgba(0,0,0,0.18);
+}
+.tc-panel .tc-value {
+  font-family: 'Saira', system-ui, sans-serif;
+  color: #0d3a3a;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+/* recessed dark glass screen for the visualizer / EQ graph */
+.tc-screen {
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 30% 12%, rgba(80,150,170,0.14), transparent 55%),
+    linear-gradient(180deg, #0c1a26 0%, #071018 55%, #040b11 100%) !important;
+  border: 1px solid #2a3540 !important;
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,0.85),
+    inset 0 0 0 1px rgba(0,0,0,0.5),
+    inset 0 -1px 0 rgba(120,160,180,0.08),
+    0 1px 0 rgba(255,255,255,0.25) !important;
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* glossy glass glare — a soft top-left light streak across the screen */
+.tc-screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 4px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 18%, transparent 42%),
+    linear-gradient(0deg, transparent 70%, rgba(255,255,255,0.04) 100%);
+  mix-blend-mode: screen;
+}
+/* corner mounting screws — beveled countersink with slotted head */
+.tc-panel::before, .tc-panel::after {
+  content: ""; position: absolute; width: 6px; height: 6px; border-radius: 9999px;
+  background:
+    radial-gradient(circle at 38% 34%, #eef1f4 0%, #c2c7cc 32%, #8a8f94 62%, #4a4d52 100%);
+  box-shadow:
+    inset 0 0.5px 0 rgba(255,255,255,0.7),
+    inset 0 -0.5px 0 rgba(0,0,0,0.55),
+    0 1px 1px rgba(0,0,0,0.65),
+    0 0.5px 0 rgba(255,255,255,0.2);
+}
+.tc-panel::before { top: 7px; left: 7px; }
+.tc-panel::after { bottom: 7px; right: 7px; }
+
+/* TC fader — inset dark groove + cool-blue fill + metallic knurled cap w/ LED */
+.tc-fader { height: 26px; align-items: center; }
+.tc-fader .relative.h-1\.5 {
+  height: 8px !important; border-radius: 4px !important;
+  background: linear-gradient(180deg, #1c2026, #343c44 50%, #16191e) !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.85), inset 0 -1px 0 rgba(255,255,255,0.04);
+  border: 1px solid #101317;
+}
+.tc-fader .absolute.h-full {
+  background: linear-gradient(180deg, #67dcdc, #1fa9a9 55%, #125f5f) !important;
+  box-shadow: 0 0 6px rgba(44,200,200,0.55);
+  border-radius: 4px !important;
+}
+.tc-fader [role="slider"] {
+  width: 18px !important; height: 22px !important; border-radius: 3px !important;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.22) 0 1px, rgba(255,255,255,0.06) 1px 2px, transparent 2px 3px),
+    linear-gradient(180deg, #f4f6f8 0%, #d6dadE 22%, #aab0b6 52%, #83898f 82%, #6a7079 100%) !important;
+  border: 1px solid #3a3d42 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    inset 0 -1px 0 rgba(0,0,0,0.45),
+    inset 1px 0 0 rgba(255,255,255,0.25),
+    inset -1px 0 0 rgba(0,0,0,0.3),
+    0 2px 3px rgba(0,0,0,0.55),
+    0 0.5px 0 rgba(255,255,255,0.2) !important;
+}
+.tc-fader [role="slider"]::after {
+  content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 5px; height: 5px; border-radius: 9999px;
+  background: radial-gradient(circle at 40% 40%, #d0fafa, #2cc8c8 60%, #127070);
+  box-shadow: 0 0 5px rgba(44,200,200,0.9);
+}
+
+/* preset pills — brushed metal */
+.tc-preset {
+  background: linear-gradient(180deg, #c4c9cf, #9aa0a6) !important;
+  border: 1px solid #4a4d52 !important;
+  color: #2a2d32 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.3);
+}
+.tc-preset:hover { background: linear-gradient(180deg, #d2d7dd, #a8aeb4) !important; }
+.tc-preset.tc-preset-active {
+  background: linear-gradient(180deg, #2cc8c8, #1fa9a9) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 0 8px rgba(44,200,200,0.6) !important;
+}
+/* tab switch — brushed */
+.tc-tab {
+  background: linear-gradient(180deg, #8a9096, #6a7079) !important;
+  color: #1a1c1f !important; border: 1px solid #3a3d42;
+}
+.tc-tab:hover { background: linear-gradient(180deg, #9aa0a6, #7a8088) !important; }
+.tc-tab.tc-tab-active {
+  background: linear-gradient(180deg, #2cc8c8, #1fa9a9) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 0 6px rgba(44,200,200,0.5);
+}
+/* power LED — amber when on, dead grey when off */
+.tc-power-on {
+  background: linear-gradient(180deg, #fbbf24, #d97706) !important;
+  border: 1px solid #92400e !important;
+  box-shadow: 0 0 8px rgba(245,158,11,0.7) !important;
+  color: #1a1c1f !important;
+}
+.tc-power-off {
+  background: linear-gradient(180deg, #5a5d62, #3a3d42) !important;
+  border: 1px solid #2a2d32 !important;
+  color: #9a9da2 !important;
+}

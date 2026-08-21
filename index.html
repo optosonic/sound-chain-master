@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Early unhandled-rejection guard. The Vite dev error-overlay handler
+         reads reason.message.match(...) without guarding, so a rejection that
+         resolves to a non-Error value (undefined / null / plain object — which
+         the @base44 SDK and some browser APIs can emit) crashes it with
+         "Cannot read properties of undefined (reading 'match')". This runs
+         during HTML parse, before Vite's runtime injection, so it registers
+         first: for non-Error reasons it logs the real value and stops the
+         overlay handler; real Errors pass through untouched. -->
+    <script>
+      (function () {
+        // Register on the CAPTURE phase so this runs before Vite's overlay
+        // handler (which also listens for unhandledrejection and calls
+        // reason.message.match(...) without guarding — a non-Error reason
+        // like undefined / null / plain object crashes it). Capture + early
+        // registration guarantees we stop the event before that handler runs.
+        window.addEventListener('unhandledrejection', function (e) {
+          var reason = e && e.reason;
+          if (reason instanceof Error) return; // let the dev overlay handle real errors
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          // eslint-disable-next-line no-console
+          console.error('[unhandled rejection] non-Error reason:', reason);
+        }, true);
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Sound Chain Master</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "name": "Preset",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "category": {
+      "type": "string",
+      "default": "mastering",
+      "title": "Category"
+    },
+    "state": {
+      "type": "object",
+      "title": "State snapshot"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}
