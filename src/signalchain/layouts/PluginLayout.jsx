@@ -23,7 +23,7 @@ export default function PluginLayout({ engine, theme, width = 1200, height = 800
   const themeKey = theme?.key;
 
   return (
-    <PluginWindow width={width} height={height} subtitle={`${width}×${height}`} theme={theme}>
+    <PluginWindow width={width} height={height} subtitle="The best master is yet to come…" theme={theme}>
       <div className="flex h-full flex-col p-2">
         <div className="min-h-0 flex-1 overflow-hidden">
           {page === 'chain' && (

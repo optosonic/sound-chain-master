@@ -245,8 +245,16 @@ export default function FullDesktopLayout({ engine, theme, mode, onModeChange, a
             <span className="text-white/30">·</span>
             <span className="text-sm font-semibold tracking-wide text-white/70">SCM — Sound Chain Master</span>
           </div>
+          <p className="mt-1 text-[11px] italic tracking-wide text-white/40">
+            The best master is yet to come…
+          </p>
           <p className="mt-2 text-xs font-medium tracking-wide text-white/45">
-            Created and designed by Ivan Zavada <span className="text-white/30">·</span> © 2026
+            Created and designed by{' '}
+            <a href="https://profiles.sydney.edu.au/ivan.zavada" target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-white">
+              Ivan Zavada
+            </a>
+            {' '}
+            <span className="text-white/30">·</span> © 2026
           </p>
           <a href="https://spher8.com" target="_blank" rel="noreferrer" className="mt-1 inline-block font-mono text-[11px] tracking-wider text-white/45 transition-colors hover:text-white/80">
             www.spher8.com

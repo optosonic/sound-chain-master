@@ -72,7 +72,7 @@ export const PANEL_ACCENT = {
   delay: '#d97706', reverb: '#0d9488', mastering: '#7c3aed', vu: '#d97706',
   level: '#0891b2', output: '#0891b2', source: '#059669', signalchain: '#2563eb',
   lufs: '#0891b2', stereoimager: '#0d9488',
-  sectionmastering: '#7c3aed', visualidentity: '#8b5cf8',
+  sectionmastering: '#7c3aed', masteredoutput: '#d97706', visualidentity: '#8b5cf8',
 };
 
 export const REFERENCES = [
@@ -83,7 +83,8 @@ export const REFERENCES = [
   { title: 'Alan Blumlein — UK Patent 394,326 (1931)', desc: '“Improvements in and relating to Electrical Transmission.” The Mid/Side technique behind the stereo imager.' },
   { title: 'W3C — Web Audio API', desc: 'The real-time DSP engine that powers every processor, filter, compressor and analyser in this application.' },
   { title: 'Lucide Icons', desc: 'Open-source icon library; the mnemonic symbol used to identify each section throughout this booklet.' },
-  { title: 'Sound Chain Master (Spher8 · SCM)', desc: 'The application this booklet documents — scm.spher8.com. Created and designed by Ivan Zavada, © 2026.' },
+  { title: 'Ivan Zavada — University of Sydney', desc: 'Dr Ivan Zavada, Senior Lecturer and Program Leader in Composition & Music Technology, Sydney Conservatorium of Music. Composer and digital media designer; the conceptual record of Mastered Output — an image of a file that does not exist yet. https://profiles.sydney.edu.au/ivan.zavada' },
+  { title: 'Sound Chain Master (Spher8 · SCM)', desc: 'The application this booklet documents — scm.spher8.com. Motto: The best master is yet to come… Created and designed by Ivan Zavada, © 2026. https://profiles.sydney.edu.au/ivan.zavada' },
 ];
 
 /* ── branded header — the EXACT SCM icon used by the main app header ─────── */
@@ -109,7 +110,7 @@ export function BookletHeader() {
           <h1 className="bk-title mt-1 text-3xl font-black leading-none tracking-tight">Sound Chain Master</h1>
           <div className="mt-2 flex items-center gap-2">
             <span className="h-px w-8" style={{ background: '#38e0ff' }} />
-            <p className="bk-muted text-xs">A focused mastering and signal-chain toolkit</p>
+            <p className="bk-muted text-xs">The best master is yet to come…</p>
           </div>
         </div>
         <div className="hidden shrink-0 flex-col items-end gap-1.5 sm:flex">

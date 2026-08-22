@@ -152,7 +152,16 @@ export default function Booklet() {
             >
               scm.spher8.com
             </a>
-            {' '}· © 2026 Ivan Zavada
+            {' '}· © 2026{' '}
+            <a
+              className="transition-colors"
+              style={{ color: isDark ? '#94a3b8' : '#64748b' }}
+              href="https://profiles.sydney.edu.au/ivan.zavada"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ivan Zavada
+            </a>
           </div>
         </div>
       </div>

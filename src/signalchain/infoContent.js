@@ -646,6 +646,70 @@ export const PANEL_INFO = {
     ],
   },
 
+  masteredoutput: {
+    title: 'Mastered Output',
+    history: [
+      { p: 'The waveform of a finished master has always arrived too late. On vinyl you saw the groove after the lacquer was cut. On tape you saw the trace after the pass. In the DAW you see the source file the moment it is loaded — but the mastered file only after you bounce, render, or export. Until then the work has no picture of itself.' },
+      { p: 'Meters tell you what is happening in this buffer. The source overview is a picture of a file that already exists on disk. Neither is an image of the master as a whole, because recording culture decided that proof of a finished sound-work is storage.' },
+      { p: 'Mastered Output inverts that order. It draws the full duration of audio that has been through the live chain but has not been written to any path. No bounce. No object in the filesystem. You are looking at how the master would look — an image of a file that does not exist yet.' },
+      { p: 'That idea is Dr Ivan Zavada’s. Senior Lecturer and Program Leader in Composition & Music Technology at the Sydney Conservatorium of Music, The University of Sydney, he is a composer and digital media designer whose work examines the relationship between concrete sounds on a fixed recorded medium and visual elements of abstraction. Mastered Output is that question made into a studio view: a picture of a sound-work before it has been inscribed. Record: https://profiles.sydney.edu.au/ivan.zavada' },
+      { bullets: [
+        { kw: 'After the cut', text: 'Lacquer, tape and bounce: the picture arrived only after inscription.' },
+        { kw: 'Meters', text: 'The living buffer — this instant, not the whole work.' },
+        { kw: 'Source wave', text: 'A file that already is: archaeology of the loaded mix.' },
+        { kw: 'Zavada', text: 'Dr Ivan Zavada, Sydney Conservatorium of Music — the pre-inscriptive master: an image of a file that does not exist yet.' },
+      ]},
+    ],
+    purpose: [
+      { p: 'This is not a courtesy preview and not a render waiting to finish. It is a third kind of image: neither the living meter nor the stored source, but the would-be file — the whole duration, as it will be if you export right now, while the thing itself still only exists as process.' },
+      { p: 'The motto of Sound Chain Master is The best master is yet to come… In the studio it means the bounce is still ahead — you are looking at a master that has not been born. The same words carry an older hope: that the finest has not yet arrived, that the Master is still coming. Those layers are not a pun. Sound has always lived in all of them at once — as craft, as vibration, as listening, as devotion, as a signal on a chain. A picture of a file that does not exist yet is the studio form of that hope: the work is still becoming.' },
+      { p: 'Once you take that seriously, the faders are not cosmetics on a graph. Pull Limiter Out and you are editing an artifact that has not been born. Move the automation lane and the future object changes its body in time. Seeing the master before it becomes a file is the innovation — created and designed by Ivan Zavada (Spher8 · SCM), © 2026.' },
+      { bullets: [
+        { kw: 'Not a bounce', text: 'Never writes audio. Never waits on a full-file render. It is a live hypothesis.' },
+        { kw: 'Live', text: 'Limiter, mix, I/O faders, ceiling, ride and section recipes redraw the picture on the next frame.' },
+        { kw: 'Whole duration', text: 'Quiet verses stay thin; slammed choruses fatten and flatten at the ceiling — the classic mastered look.' },
+        { kw: 'Section-aware', text: 'With Section Mastering on, each letter’s recipe has its own density so a verse can stay open while a chorus bricks up.' },
+        { kw: 'Studio', text: 'The export has not happened. This wave is the master before it is a file.' },
+        { kw: 'Belief', text: 'The older promise that the best — and the Master — is still arriving.' },
+        { kw: 'Sound', text: 'Craft, listening, signal, devotion: sound is never only storage.' },
+      ]},
+    ],
+    params: [
+      { name: 'The motto', desc: 'The best master is yet to come… sits on this panel because the picture is of a file that does not exist yet. In the studio the finest bounce is still ahead. In belief the finest — and the Master — is still coming. Across sound’s roles the work is never only what has already been inscribed.' },
+      { name: 'How it would look', desc: 'Display only — no knobs on this panel. The picture is a hypothesis drawn over the loaded-file peak overview. The source wave above is the file you have; this wave is the file you do not have yet.' },
+      { name: 'Target LUFS vs Detect', desc: 'Makeup is the lift from detected loudness (or −18 LUFS if you have not Detected) toward the Mastering Studio target. Detect makes the picture honest; without it the hypothesis still runs.' },
+      { name: 'Limiter ceiling', desc: 'The dashed amber line is the brickwall the shape leans into. Peaks fatten and flatten there as drive and loudness rise — that is the mastered silhouette.' },
+      { name: 'Limiter In / METERS IN', desc: 'These trims drive into the shape, so slamming the input fattens the wave toward the ceiling instead of merely scaling a finished envelope.' },
+      { name: 'Limiter Out / METERS OUT', desc: 'These trims scale after the shape, so pulling output down collapses the whole picture immediately. They are not absorbed by the ceiling.' },
+      { name: 'Mix, clip, glue', desc: 'Limiter mix, clipper mix and compressor ratio thicken the drive. More mix, more clip, more glue — denser, more brickwalled look.' },
+      { name: 'Automation / AUTO', desc: 'When AUTO is on, the Master Effect lane rides the picture along the timeline. When AUTO is off, the master-trim control is the static ride. Drag the lane and the would-be file moves with it.' },
+      { name: 'Section recipes', desc: 'With Section Mastering on, each timed region uses its assigned factory preset’s target LUFS and ceiling, so the picture can change density at every cue.' },
+    ],
+    equation: {
+      intro: 'The picture is a live hypothesis, not a DSP bounce. Source peaks x are shaped by a brickwall tanh at the limiter ceiling, then scaled by the output trims. That is why Out faders move the wave, and why In faders fatten it into the ceiling.',
+      rows: [
+        { label: 'Hypothesis', formula: 'y = c · tanh((x · pre · makeup / c) · drive) · post' },
+        { label: 'Makeup', formula: 'makeup ← 10^((targetLUFS − sourceLUFS) / 20)   (clamped, then ridden by fx)' },
+        { label: 'Ceiling', formula: 'c = 10^(min(0, ceiling dB) / 20)' },
+        { label: 'Drive', formula: 'drive = 1.06 + 1.55·limMix + fx·(0.45·clipMix + glue)' },
+        { label: 'Into the shape', formula: 'pre = limiter In × master In' },
+        { label: 'After the shape', formula: 'post = limiter Out × master Out × mix blend' },
+        { label: 'Ride', formula: 'fx = 1 + masterTrim   (AUTO lane, or the trim control)' },
+      ],
+    },
+    usage: [
+      { p: 'Mastered Output sits under Section Mastering. Load a file, then watch the picture while you master. The source wave is the file you have. This wave is the file you do not have yet.' },
+      { bullets: [
+        { kw: 'Load a file', text: 'Without a source there is nothing to hypothesize.' },
+        { kw: 'Detect', text: 'Tighter LUFS estimate, so the makeup — and the picture — is honest.' },
+        { kw: 'Move the chain', text: 'Limiter, mix, I/O faders, Style and the automation lane all redraw on the next frame.' },
+        { kw: 'Sections', text: 'With Section Mastering on, each letter’s recipe shows as its own density.' },
+        { kw: 'Export is birth', text: 'Render & Export is when the image becomes a file. Until then this is how it would look.' },
+        { kw: 'Record', text: 'Dr Ivan Zavada — Senior Lecturer, Composition & Music Technology, Sydney Conservatorium of Music, The University of Sydney. https://profiles.sydney.edu.au/ivan.zavada' },
+      ]},
+    ],
+  },
+
   vu: {
     title: 'VU Meter',
     diagrams: ['vu-scale'],

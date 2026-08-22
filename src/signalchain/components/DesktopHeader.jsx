@@ -103,7 +103,7 @@ export default function DesktopHeader({
               className="text-[11px] tracking-wide"
               style={{ color: light ? '#2a342f' : 'rgba(212,216,222,0.62)', letterSpacing: '0.04em' }}
             >
-              Professional audio DSP  ·  component lab
+              The best master is yet to come…
             </p>
           </div>
         </div>
