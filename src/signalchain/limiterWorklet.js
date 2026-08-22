@@ -156,6 +156,20 @@ class MaxWindow {
 const STYLE_BIAS = {
   transparent: 1.0, punchy: 0.7, modern: 0.85, warm: 1.4, classical: 1.8,
 };
+const STYLE_BIAS_KEYS = ['transparent', 'punchy', 'modern', 'warm', 'classical'];
+
+function styleBias(p) {
+  if (typeof p.stylePos === 'number' && Number.isFinite(p.stylePos)) {
+    const x = Math.max(0, Math.min(4, p.stylePos));
+    const i = Math.floor(x);
+    const j = Math.min(4, i + 1);
+    const t = x - i;
+    const a = STYLE_BIAS[STYLE_BIAS_KEYS[i]] || 1;
+    const b = STYLE_BIAS[STYLE_BIAS_KEYS[j]] || 1;
+    return a + (b - a) * t;
+  }
+  return STYLE_BIAS[p.style] || 1;
+}
 
 class LimiterProcessor extends AudioWorkletProcessor {
   constructor() {
@@ -219,6 +233,7 @@ class LimiterProcessor extends AudioWorkletProcessor {
     if (typeof m.releaseShape === 'string') p.releaseShape = m.releaseShape;
     if (typeof m.attack === 'number') p.attack = m.attack;
     if (typeof m.style === 'string') p.style = m.style;
+    if (typeof m.stylePos === 'number' && Number.isFinite(m.stylePos)) p.stylePos = m.stylePos;
     if (typeof m.stereoLink === 'number') p.stereoLink = m.stereoLink;
     if (typeof m.msMode === 'boolean') p.msMode = m.msMode;
     if (typeof m.truePeak === 'boolean') p.truePeak = m.truePeak;
@@ -253,7 +268,7 @@ class LimiterProcessor extends AudioWorkletProcessor {
       else if (gr > 2) T = 0.12;        // moderate → medium
       else T = 0.25;                    // light → slow
     } else {
-      T = Math.max(0.001, p.release) * (STYLE_BIAS[p.style] || 1);
+      T = Math.max(0.001, p.release) * styleBias(p);
     }
     if (p.releaseShape === 'linear') return 1 / (T * effRate);
     return 1 - Math.exp(-1 / (T * effRate)); // exp / adaptive

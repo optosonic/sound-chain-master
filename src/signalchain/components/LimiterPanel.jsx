@@ -39,11 +39,36 @@ const SCALES = {
 
 const DEFAULT_LIMITER = {
   enabled: true, ceiling: -0.1, release: 0.05, releaseMode: 'manual', attack: 0,
-  lookahead: 0, stereoLink: 100, style: 'transparent', truePeak: false,
+  lookahead: 0, stereoLink: 100, style: 'transparent', stylePos: 0, styleXfade: false, truePeak: false,
   oversampling: 1, mix: 100, dither: 'off', dcBlocker: true, noiseShape: 'none',
   msMode: false, releaseShape: 'exp', scale: '24',
   inputGain: 0, outputGain: 0
 };
+
+const STYLE_KEYS = STYLES.map((s) => s.key);
+
+function lerpLimiterStyle(pos) {
+  const x = Math.max(0, Math.min(4, Number(pos) || 0));
+  const i = Math.floor(x);
+  const j = Math.min(4, i + 1);
+  const t = x - i;
+  const a = STYLE_PRESETS[STYLE_KEYS[i]];
+  const b = STYLE_PRESETS[STYLE_KEYS[j]];
+  const mixn = (k) => a[k] + (b[k] - a[k]) * t;
+  return {
+    inputGain: mixn('inputGain'),
+    ceiling: mixn('ceiling'),
+    release: mixn('release'),
+    lookahead: mixn('lookahead'),
+    stereoLink: mixn('stereoLink'),
+    mix: mixn('mix'),
+    outputGain: mixn('outputGain'),
+    releaseMode: t < 0.5 ? a.releaseMode : b.releaseMode,
+    style: STYLE_KEYS[t < 0.5 ? i : j],
+    stylePos: x,
+    styleXfade: true,
+  };
+}
 
 // Inter-sample peak estimate via cubic-Hermite interpolation between
 // consecutive samples — the reconstructed analog peak can overshoot the sample
@@ -260,8 +285,35 @@ const LimiterControls = memo(function LimiterControls({ limiter, onChange }) {
 
       <div className="mt-3 flex min-h-0 flex-1 flex-col justify-evenly gap-2">
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              const on = !safe.styleXfade;
+              const pos = Number.isFinite(safe.stylePos) ? safe.stylePos : Math.max(0, STYLE_KEYS.indexOf(safe.style));
+              if (on) onChange({ ...safe, ...lerpLimiterStyle(pos) });
+              else {
+                const idx = Math.round(pos);
+                const key = STYLE_KEYS[idx] || 'transparent';
+                onChange({ ...safe, styleXfade: false, stylePos: idx, style: key, ...STYLE_PRESETS[key] });
+              }
+            }}
+            className={`w-16 shrink-0 rounded-md border px-1 py-1 text-[9px] font-bold uppercase tracking-wider ${safe.styleXfade ? 'border-merlot-400 bg-merlot-500 text-white' : 'border-white/15 bg-white/5 text-white/60 hover:bg-white/10'}`}
+            title="Crossfade limiter styles along the track"
+          >XFADE</button>
+          <input
+            type="range"
+            min={0}
+            max={4}
+            step={0.01}
+            value={Number.isFinite(safe.stylePos) ? safe.stylePos : Math.max(0, STYLE_KEYS.indexOf(safe.style))}
+            onChange={(e) => onChange({ ...safe, ...lerpLimiterStyle(e.target.value) })}
+            className="min-w-0 flex-1 accent-merlot-400"
+            title="Drag to morph between styles (turns XFADE on)"
+          />
+        </div>
+        <div className="flex items-center gap-2">
           <span className="w-16 shrink-0 text-[9px] uppercase tracking-wider text-white/45">Style</span>
-          <div className="flex min-w-0 flex-1 gap-1.5">{STYLES.map((s) => pill(safe.style === s.key, () => onChange({ ...safe, style: s.key, ...STYLE_PRESETS[s.key] }), s.label, `Load ${s.label} preset into the dials`))}</div>
+          <div className="flex min-w-0 flex-1 gap-1.5">{STYLES.map((s, idx) => pill(!safe.styleXfade && safe.style === s.key, () => onChange({ ...safe, styleXfade: false, style: s.key, stylePos: idx, ...STYLE_PRESETS[s.key] }), s.label, `Load ${s.label} preset into the dials`))}</div>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-16 shrink-0 text-[9px] uppercase tracking-wider text-white/45">Oversamp</span>

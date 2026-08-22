@@ -138,6 +138,7 @@ export function buildLimiter(ctx) {
             releaseShape: lim.releaseShape ?? 'exp',
             attack: lim.attack ?? 0,
             style: lim.style ?? 'transparent',
+            stylePos: lim.stylePos,
             stereoLink: lim.stereoLink ?? 100,
             msMode: !!lim.msMode,
             truePeak: !!lim.truePeak,
@@ -188,7 +189,7 @@ export function buildLimiter(ctx) {
       fadeGain(ins.dry, enabled ? 1 - mix : 1, now, lChanged);
       // DC blocker toggle (default on). "Off" pushes the corner well below
       // audio so the filter is effectively flat across the band.
-      limDC.frequency.setTargetAtTime(lim.dcBlocker === false ? 0.0001 : 10, now, 0.02);
+      limDC.frequency.setTargetAtTime(lim.dcBlocker === false ? 8 : 12, now, 0.02);
       // Dither + noise shaping (final stage). Legacy 'tpdf' toggle → 16-bit.
       let bd = lim.dither;
       if (bd === 'tpdf') bd = '16';
