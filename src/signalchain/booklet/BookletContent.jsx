@@ -83,7 +83,7 @@ export const REFERENCES = [
   { title: 'Alan Blumlein — UK Patent 394,326 (1931)', desc: '“Improvements in and relating to Electrical Transmission.” The Mid/Side technique behind the stereo imager.' },
   { title: 'W3C — Web Audio API', desc: 'The real-time DSP engine that powers every processor, filter, compressor and analyser in this application.' },
   { title: 'Lucide Icons', desc: 'Open-source icon library; the mnemonic symbol used to identify each section throughout this booklet.' },
-  { title: 'Ivan Zavada — University of Sydney', desc: 'Dr Ivan Zavada, Senior Lecturer and Program Leader in Composition & Music Technology, Sydney Conservatorium of Music. Composer and digital media designer; the conceptual record of Mastered Output — an image of a file that does not exist yet. https://profiles.sydney.edu.au/ivan.zavada' },
+  { title: 'Ivan Zavada — University of Sydney', desc: 'Dr Ivan Zavada, Senior Lecturer and AI Champion in Composition & Music Technology, Sydney Conservatorium of Music. Composer and digital media designer; the conceptual record of Mastered Output — an image of a file that does not exist yet. https://profiles.sydney.edu.au/ivan.zavada' },
   { title: 'Sound Chain Master (Spher8 · SCM)', desc: 'The application this booklet documents — scm.spher8.com. Motto: The best master is yet to come… Created and designed by Ivan Zavada, © 2026. https://profiles.sydney.edu.au/ivan.zavada' },
 ];
 

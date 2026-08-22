@@ -56,7 +56,7 @@ export default function EQGraph({ eq, audioContext, analyzerNode, onBandDrag, on
     if (!controlled) setInternalSelected(id);
     onSelect?.(id);
   }, [controlled, onSelect]);
-  const [showSpectrum, setShowSpectrum] = useState(false);
+  const [showSpectrum, setShowSpectrum] = useState(true);
   const [showFM, setShowFM] = useState(false);
   const [showPink, setShowPink] = useState(false);
   const eqRef = useRef(eq);
