@@ -621,6 +621,7 @@ export const PANEL_INFO = {
       { name: 'Glide handles (✕)', desc: 'The ✕ handle on each boundary drags up/down to set the glide amount — how wide the cross-parameterization zone spreads around the cue, drawn as a triangle between the two adjacent section colours. 0 = a hard switch at the boundary; full = the longest smooth morph.' },
       { name: 'Live Follow', desc: 'On, the playhead drives the whole system: in the stable region of a section the section\'s preset is hard-applied once; inside a glide zone the engine morphs between the two adjacent presets every frame, with no React re-render (the 60 fps loop drives the DSP directly).' },
       { name: 'Audition / On / Reset', desc: 'Click any section to audition its preset on the live chain immediately. On/Off globally enables or disables section automation; Reset restores 3 sections and the default A–E letters.' },
+      { name: 'AUTO / three lanes', desc: 'AUTO rides the file. Master Effect is wet-mix amount (−50…+50%). Sound IN is −24…+24 dB. Sound OUT is 0…−24 dB only — never above 0, so it cannot push the limiter. Detect writes the same per-section hold planes on all three lanes — effect follows detected energy, IN and OUT sit at 0 dB so each section can be ridden. When AUTO is off, the IN/OUT faders and master-trim control are the static values.' },
     ],
     equation: {
       intro: 'Across a glide zone of half-width h around cue c, the playhead position t (0 at the left edge, 1 at the right) blends every parameter between the two adjacent preset recipes. EQ and Compressor interpolate parameters using a neutral (flat / ratio-1) state when a side has the module off, so the effect ramps in/out. Limiter, Tape and Saturation scale their wet/dry mix by each side\'s presence. Multi-band uses a continuous crossfade weight (0..1) so it passes through with no graph rewire.',
@@ -682,7 +683,7 @@ export const PANEL_INFO = {
       { name: 'Limiter In / METERS IN', desc: 'These trims drive into the shape, so slamming the input fattens the wave toward the ceiling instead of merely scaling a finished envelope.' },
       { name: 'Limiter Out / METERS OUT', desc: 'These trims scale after the shape, so pulling output down collapses the whole picture immediately. They are not absorbed by the ceiling.' },
       { name: 'Mix, clip, glue', desc: 'Limiter mix, clipper mix and compressor ratio thicken the drive. More mix, more clip, more glue — denser, more brickwalled look.' },
-      { name: 'Automation / AUTO', desc: 'When AUTO is on, the Master Effect lane rides the picture along the timeline. When AUTO is off, the master-trim control is the static ride. Drag the lane and the would-be file moves with it.' },
+      { name: 'Automation / AUTO', desc: 'When AUTO is on, Master Effect, Sound IN and Sound OUT ride the picture along the timeline. When AUTO is off, the master-trim control and the IN/OUT faders are the static ride.' },
       { name: 'Section recipes', desc: 'With Section Mastering on, each timed region uses its assigned factory preset’s target LUFS and ceiling, so the picture can change density at every cue.' },
     ],
     equation: {

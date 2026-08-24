@@ -94,7 +94,7 @@ export default function EQPanel({ eq, onEQChange, audioContext, analyzerNode }) 
         <BandCard color="#60a5fa" channelColor={msOn ? channelColor : null}>
           {titleChip('#60a5fa', 'Low')}
           <ShelfCut value={aLow.cut} onShelf={() => updBand('low', { cut: false })} onCut={() => updBand('low', { cut: true })} color="#60a5fa" />
-          <Dial value={aLow.freq} onChange={(v) => updBand('low', { freq: v })} defaultValue={200} min={20} max={2000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
+          <Dial value={aLow.freq} onChange={(v) => updBand('low', { freq: v })} defaultValue={200} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
           {!aLow.cut && <Dial value={aLow.gain} onChange={(v) => updBand('low', { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" size="small" />}
           {aLow.cut && <SlopeButtons value={aLow.slope} onChange={(s) => updBand('low', { slope: s })} color="#60a5fa" />}
         </BandCard>
@@ -106,7 +106,7 @@ export default function EQPanel({ eq, onEQChange, audioContext, analyzerNode }) 
       return (
         <BandCard color={selBand.color} channelColor={msOn ? channelColor : null}>
           {titleChip(selBand.color, `Mid ${i + 1}`)}
-          <Dial value={m.freq} onChange={(v) => updBand(`mid${i}`, { freq: v })} defaultValue={1000} min={200} max={8000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
+          <Dial value={m.freq} onChange={(v) => updBand(`mid${i}`, { freq: v })} defaultValue={1000} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
           <Dial value={m.gain} onChange={(v) => updBand(`mid${i}`, { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" size="small" />
           <Dial value={m.q} onChange={(v) => updBand(`mid${i}`, { q: v })} defaultValue={1} min={0.1} max={6} step={0.1} label="Q" size="small" />
         </BandCard>
@@ -116,7 +116,7 @@ export default function EQPanel({ eq, onEQChange, audioContext, analyzerNode }) 
       <BandCard color="#f59e0b" channelColor={msOn ? channelColor : null}>
         {titleChip('#f59e0b', 'High')}
         <ShelfCut value={aHigh.cut} onShelf={() => updBand('high', { cut: false })} onCut={() => updBand('high', { cut: true })} color="#f59e0b" />
-        <Dial value={aHigh.freq} onChange={(v) => updBand('high', { freq: v })} defaultValue={5000} min={1000} max={20000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
+        <Dial value={aHigh.freq} onChange={(v) => updBand('high', { freq: v })} defaultValue={5000} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" size="small" />
         {!aHigh.cut && <Dial value={aHigh.gain} onChange={(v) => updBand('high', { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" size="small" />}
         {aHigh.cut && <SlopeButtons value={aHigh.slope} onChange={(s) => updBand('high', { slope: s })} color="#f59e0b" />}
       </BandCard>

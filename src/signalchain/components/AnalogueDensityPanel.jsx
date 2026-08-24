@@ -232,7 +232,7 @@ export default function AnalogueDensityPanel({ density, onChange, analyzers }) {
                 ANALOGUE <span className="text-sky-300">DENSITY</span>
               </div>
               <div className="text-[8px] font-mono uppercase tracking-wider text-white/40">
-                Black Box · Tube Density Engine
+                Tube Density Engine
               </div>
             </div>
           </div>

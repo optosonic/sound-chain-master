@@ -210,7 +210,7 @@ export default function DynamicEQPanel({ dynamicEq, onDynamicEQChange, audioCont
     if (selBand.kind === 'low') {
       return (
         <div className="flex items-center justify-around gap-1 flex-1 min-w-0">
-          <Dial value={aLow.freq} onChange={(v) => updBand('low', { freq: v })} defaultValue={200} min={20} max={2000} step={1} scale="log" label="Freq" unit="Hz" />
+          <Dial value={aLow.freq} onChange={(v) => updBand('low', { freq: v })} defaultValue={200} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" />
           <Dial value={aLow.gain} onChange={(v) => updBand('low', { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" />
           <Dial value={aLow.threshold} onChange={(v) => updBand('low', { threshold: v })} defaultValue={-24} min={-60} max={0} step={0.1} label="Thresh" unit="dB" />
           <Dial value={aLow.ratio} onChange={(v) => updBand('low', { ratio: v })} defaultValue={1} min={1} max={12} step={0.1} scale="log" label="Ratio" />
@@ -224,7 +224,7 @@ export default function DynamicEQPanel({ dynamicEq, onDynamicEQChange, audioCont
       const m = aMids[i];
       return (
         <div className="flex items-center justify-around gap-1 flex-1 min-w-0">
-          <Dial value={m.freq} onChange={(v) => updBand(`mid${i}`, { freq: v })} defaultValue={1000} min={200} max={8000} step={1} scale="log" label="Freq" unit="Hz" />
+          <Dial value={m.freq} onChange={(v) => updBand(`mid${i}`, { freq: v })} defaultValue={1000} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" />
           <Dial value={m.gain} onChange={(v) => updBand(`mid${i}`, { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" />
           <Dial value={m.q} onChange={(v) => updBand(`mid${i}`, { q: v })} defaultValue={1} min={0.1} max={6} step={0.1} label="Q" size="small" />
           <Dial value={m.threshold} onChange={(v) => updBand(`mid${i}`, { threshold: v })} defaultValue={-24} min={-60} max={0} step={0.1} label="Thresh" unit="dB" />
@@ -236,7 +236,7 @@ export default function DynamicEQPanel({ dynamicEq, onDynamicEQChange, audioCont
     }
     return (
       <div className="flex items-center justify-around gap-1 flex-1 min-w-0">
-        <Dial value={aHigh.freq} onChange={(v) => updBand('high', { freq: v })} defaultValue={5000} min={1000} max={20000} step={1} scale="log" label="Freq" unit="Hz" />
+        <Dial value={aHigh.freq} onChange={(v) => updBand('high', { freq: v })} defaultValue={5000} min={20} max={20000} step={1} scale="log" label="Freq" unit="Hz" />
         <Dial value={aHigh.gain} onChange={(v) => updBand('high', { gain: v })} defaultValue={0} min={-range.max} max={range.max} step={0.1} label="Gain" unit="dB" />
         <Dial value={aHigh.threshold} onChange={(v) => updBand('high', { threshold: v })} defaultValue={-24} min={-60} max={0} step={0.1} label="Thresh" unit="dB" />
         <Dial value={aHigh.ratio} onChange={(v) => updBand('high', { ratio: v })} defaultValue={1} min={1} max={12} step={0.1} scale="log" label="Ratio" />
